@@ -1,5 +1,4 @@
 package Projeto1Poo.entidades;
-
 public class Menus{
 
     public static void MenuPrincipal(){
@@ -10,9 +9,10 @@ public class Menus{
         System.out.println("2. Gestão de Médicos ");
         System.out.println("3. Agendamento de Consultas ");
         System.out.println("4. Gestão de Internações ");
-        System.out.println("5. Relatórios ");
+        System.out.println("5. Relatórios ");   
         System.out.println("\n0. Fechar Sistema \n");
-    }
+        }
+    
     
     public static void MenuPaciente(){
 
@@ -68,4 +68,6 @@ public class Menus{
         System.out.println("4. Pacientes internados ");
         System.out.println("\n0. Voltar ao Menu Principal\n ");
     }
+
+
 }

@@ -1,11 +1,10 @@
 package Projeto1Poo.entidades;
-import java.util.List;
+// import java.util.List;
 
 public class Paciente extends Pessoa {
-
     private String numeroProntuario;
-    private String dataCadrastro;
-    private Convenio planodesaude;
+    /*private String dataCadrastro;
+    private String planodesaude;
 
     private String dataSaida;
     private String Status;
@@ -17,12 +16,12 @@ public class Paciente extends Pessoa {
 
     private String nomeContatoEmergencia;
     private String numeroContatoEmergencia;
-    private String parentescoContatoDeEmergência;
+    private String parentescoContatoDeEmergência;*/
 
 
 
 
-    public Paciente(String nome, String cpf, String endereço, String email, int idade, String telefone, char sexoBiologico /*Falta adicionar os atributos da classe paciente) */){
+    public Paciente(String nome, String cpf, String endereço, String email, int idade, String telefone, char sexoBiologico, String numeroProntuario){
 
         super(nome, cpf, endereço, email, idade, telefone, sexoBiologico);
         this.numeroProntuario = numeroProntuario;
@@ -31,8 +30,8 @@ public class Paciente extends Pessoa {
     public String getNumeroProntuario(){
         return numeroProntuario;
     }
+    
     public void setNumeroPronturario(String numeroProntuario){
-
     this.numeroProntuario = numeroProntuario;
     }  
     
