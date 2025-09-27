@@ -1,18 +1,17 @@
 package Projeto1Poo.entidades;
 
 public class Pessoa{
-    private String nome;
-    private String cpf;
-    private String endereço;
-    private String email;
+    private String nome;    
     private int idade;
+    private String sexoBiologico;
+    private String cpf;
+    private String email;
     private String telefone;
-    private char sexoBiologico;
     
-    public Pessoa(String nome, String cpf, String endereço, String email, int idade, String telefone, char sexoBiologico){
+    
+    public Pessoa(String nome, String cpf, String email, int idade, String telefone, String sexoBiologico){
         this.nome = nome;
         this.cpf = cpf;
-        this.endereço = endereço;
         this.email = email;  
         this.idade = idade;  
         this.telefone = telefone;  
@@ -34,14 +33,6 @@ public class Pessoa{
 
     public void setCpf(String cpf) {
         this.cpf = cpf;
-    }
-
-    public String getEndereço() {
-        return this.endereço;
-    }
-
-    public void setEndereço(String endereço) {
-        this.endereço = endereço;
     }
 
     public String getEmail() {
@@ -68,11 +59,11 @@ public class Pessoa{
         this.telefone = telefone;
     }
 
-    public char getSexo() {
+    public String getSexoBiologico() {
         return this.sexoBiologico;
     }
 
-    public void setSexo(char sexoBiologico) {
+    public void setSexoBiologico(String sexoBiologico) {
         this.sexoBiologico = sexoBiologico;
     }
 }
