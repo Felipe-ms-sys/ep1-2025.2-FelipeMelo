@@ -23,6 +23,22 @@ public class Medico extends Pessoa{
         todosMedicos.add(medico);
     }
 
+    public static List<Medico> listarTodos() {
+        return new ArrayList<>(todosMedicos);
+    }
+
+    public static Medico buscarMedicoPorCpf(String cpf){
+        for(Medico medico : todosMedicos){
+            if (medico.getCpf().equals(cpf))
+            return medico;
+            }
+        return null;
+    }
+
+    public static void excluir(Medico medico) {
+        todosMedicos.remove(medico);
+    }
+
     public String getCrm(){
         return crm;
     }

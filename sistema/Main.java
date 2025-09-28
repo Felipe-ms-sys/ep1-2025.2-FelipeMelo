@@ -89,7 +89,7 @@ public class Main{
                             cadastrarMedico();
                             break;
                         case 2: 
-                            //editarMedico();
+                            editarMedico();
                             break;
                         case 3: 
                            // conferirDadosMedico();
@@ -447,7 +447,7 @@ public class Main{
         
             System.out.print("Especialidade: ");
             String especialidade = scanner.nextLine();
-            
+
             try {
                 Medico novoMedico = new Medico(nome, cpf, email, idade, telefone, sexoBiologico, crm, especialidade);
 
@@ -457,9 +457,79 @@ public class Main{
                 System.out.println("Erro ao cadastrar médico: " + e.getMessage());
 
             }
-
-
         }
+
+        private static void editarMedico() {
+            System.out.println("-------- Editar Dados do Médico -------");
+            System.out.print("Digite o CPF do médico: ");
+            String cpf = scanner.nextLine();
+
+            Medico medico = Medico.buscarMedicoPorCpf(cpf);
+
+            if (medico == null) {
+                System.out.println("\nMédico não encontrado.");
+                return;
+            }
+
+            boolean editandoMedico = true;
+            while (editandoMedico) {
+                System.out.println("\n--- Editando Médico: " + medico.getNome() + " ---");
+                System.out.println("1. Editar Nome");
+                System.out.println("2. Editar Email");
+                System.out.println("3. Editar Telefone");
+                System.out.println("4. Editar Especialidade");
+                System.out.println("0. Voltar ao Menu Anterior");
+
+                int opcao = scanner.nextInt();
+                scanner.nextLine();
+
+                switch (opcao) {
+                    case 1:
+                        System.out.println("Nome atual: " + medico.getNome());
+                        System.out.print("Digite o novo nome: ");
+                        String novoNome = scanner.nextLine();
+                        medico.setNome(novoNome);
+                        System.out.println("Nome atualizado com sucesso!");
+                        break;
+
+                    case 2:
+                        System.out.println("Email atual: " + medico.getEmail());
+                        System.out.print("Digite o novo email: ");
+                        String novoEmail = scanner.nextLine();
+                        medico.setEmail(novoEmail); 
+                        System.out.println("Email atualizado com sucesso!");
+                        break;
+
+                    case 3:
+                        System.out.println("Telefone atual: " + medico.getTelefone());
+                        System.out.print("Digite o novo telefone: ");
+                        String novoTelefone = scanner.nextLine();
+                        medico.setTelefone(novoTelefone); 
+                        System.out.println("Telefone atualizado com sucesso!");
+                        break;
+
+                    case 4:
+                        System.out.println("Especialidade atual: " + medico.getEspecialidade());
+                        System.out.print("Digite a nova especialidade: ");
+                        String novaEspecialidade = scanner.nextLine();
+                        medico.setEspecialidade(novaEspecialidade); 
+                        System.out.println("Especialidade atualizada com sucesso!");
+                        break;
+
+                    case 0:
+                        editandoMedico = false;
+                        System.out.println("Retornando ao menu de médicos");
+                        break;
+
+                    default:
+                        System.out.println("Opção inválida. Tente novamente.");
+                        break;
+                        
+                    }
+                }
+            }
+
+            
 
 }
     
