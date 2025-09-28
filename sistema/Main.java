@@ -89,15 +89,15 @@ public class Main{
                             cadastrarMedico();
                             break;
                         case 2: 
-                            editarMedico();
+                            //editarMedico();
                             break;
-                        case 3: // Método de conferir dados do médico
-                            conferirDadosMedico();
+                        case 3: 
+                           // conferirDadosMedico();
                             break;
                         case 4: // Método de gerenciar agenda
                             break;
                         case 5: 
-                            excluirMedico();
+                            //excluirMedico();
                             break;
                     }
                     break;
@@ -419,6 +419,48 @@ public class Main{
                 System.out.println("Exclusão cancelada.");
             }
         }
+
+        private static void cadastrarMedico(){
+            System.out.println("-------- Cadastrar Novo Médico -------");
+
+            System.out.print("Nome: ");
+            String nome = scanner.nextLine();
+
+            System.out.print("CPF: ");
+            String cpf = scanner.nextLine();
+
+            System.out.print("Email: ");
+            String email = scanner.nextLine();
+
+            System.out.print("Telefone: ");
+            String telefone = scanner.nextLine();
+
+            System.out.print("Idade: ");
+            int idade = scanner.nextInt();
+            scanner.nextLine(); 
+
+            System.out.print("Sexo Biológico (M/F): ");
+            String sexoBiologico = scanner.nextLine().toUpperCase();
+
+            System.out.print("Crm: ");
+            String crm = scanner.nextLine();
+        
+            System.out.print("Especialidade: ");
+            String especialidade = scanner.nextLine();
+            
+            try {
+                Medico novoMedico = new Medico(nome, cpf, email, idade, telefone, sexoBiologico, crm, especialidade);
+
+                Medico.cadastrar(novoMedico);
+                System.out.println("Médico cadastrado com sucesso! \b");
+            } catch (IllegalArgumentException e) {
+                System.out.println("Erro ao cadastrar médico: " + e.getMessage());
+
+            }
+
+
+        }
+
 }
     
 

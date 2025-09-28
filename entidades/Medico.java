@@ -1,7 +1,10 @@
 package Projeto1Poo.entidades;
 
-public class Medico extends Pessoa{
+import java.util.ArrayList;
+import java.util.List;
 
+public class Medico extends Pessoa{
+    private static List<Medico> todosMedicos = new ArrayList<>();
     private String crm;
     private String especialidade;
     
@@ -9,6 +12,15 @@ public class Medico extends Pessoa{
         super(nome, cpf, email, idade, telefone, sexoBiologico);
         this.crm = crm;
         this.especialidade = especialidade;
+    }
+
+    public static void cadastrar(Medico medico) {
+        for (Medico m : todosMedicos) {
+            if (m.getCpf().equals(medico.getCpf())) {
+                throw new IllegalArgumentException("Cpf já cadastrado!");
+            }
+        }
+        todosMedicos.add(medico);
     }
 
     public String getCrm(){
