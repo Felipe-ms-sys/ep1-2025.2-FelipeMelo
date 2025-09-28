@@ -92,7 +92,7 @@ public class Main{
                             editarMedico();
                             break;
                         case 3: 
-                           // conferirDadosMedico();
+                           conferirDadosMedico();
                             break;
                         case 4: // Método de gerenciar agenda
                             break;
@@ -348,7 +348,7 @@ public class Main{
             }
         }
 
-        public static void conferirDadosPaciente() {
+        private static void conferirDadosPaciente() {
             System.out.println("-------- Conferir Dados do Paciente -------");
             System.out.print("Digite o CPF do paciente: ");
             String cpf = scanner.nextLine();
@@ -397,7 +397,7 @@ public class Main{
             }
         }
 
-        public static void excluirPaciente() {
+        private static void excluirPaciente() {
             System.out.println("-------- Excluir Paciente -------");
             System.out.print("Digite o CPF do paciente a ser excluído: ");
             String cpf = scanner.nextLine();
@@ -527,9 +527,32 @@ public class Main{
                         
                     }
                 }
+        }
+
+        private static void conferirDadosMedico(){
+            System.out.println("-------- Conferir Dados do Médico -------");
+            System.out.print("Digite o CPF do médico: ");
+            String cpf = scanner.nextLine();
+
+            Medico medico = Medico.buscarMedicoPorCpf(cpf);
+
+            if (medico == null) {
+                System.out.println("\nMédico não encontrado.");
+                return;
             }
 
-            
+            System.out.println("\n--- Dados do Médico ---");
+            System.out.println("Nome: " + medico.getNome());
+            System.out.println("CPF: " + medico.getCpf());
+            System.out.println("Email: " + medico.getEmail());
+            System.out.println("Telefone: " + medico.getTelefone());
+            System.out.println("Idade: " + medico.getIdade());
+            System.out.println("Sexo Biológico: " + medico.getSexoBiologico());
+            System.out.println("CRM: " + medico.getCrm());
+            System.out.println("Especialidade: " + medico.getEspecialidade());
+        }
+        
+
 
 }
     
