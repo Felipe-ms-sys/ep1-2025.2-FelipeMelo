@@ -20,8 +20,7 @@ public class Menus{
         System.out.println("1. Cadastrar novo paciente ");
         System.out.println("2. Alterar dados do paciente");
         System.out.println("3. Conferir dados do paciente");
-        System.out.println("4. Buscar paciente ");
-        System.out.println("5. Excluir paciente ");
+        System.out.println("4. Excluir paciente ");
         System.out.println("\n0. Voltar ao Menu Principal\n ");
     }
 
@@ -32,8 +31,7 @@ public class Menus{
         System.out.println("2. Alterar dados do médico");
         System.out.println("3. Conferir dados do médico");
         System.out.println("4. Gerenciar agenda ");
-        System.out.println("5. Buscar médico ");
-        System.out.println("6. Excluir médico ");
+        System.out.println("5. Excluir médico ");
         System.out.println("\n0. Voltar ao Menu Principal\n ");
     }
 
