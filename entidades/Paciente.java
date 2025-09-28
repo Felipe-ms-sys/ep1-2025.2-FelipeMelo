@@ -46,6 +46,18 @@ public class Paciente extends Pessoa {
         return new ArrayList<>(todosPacientes);
     }
 
+    public static Paciente buscarPacientePorCpf(String cpf){
+        for(Paciente paciente : todosPacientes){
+            if (paciente.getCpf().equals(cpf))
+            return paciente;
+            }
+        return null;
+    }
+
+    public static void excluir(Paciente paciente) {
+        todosPacientes.remove(paciente);
+    }
+
     public String getNumeroProntuario() {
         return numeroProntuario;
     }

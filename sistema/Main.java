@@ -61,13 +61,14 @@ public class Main{
                         case 1: 
                             cadastrarPaciente();
                             break;
-                        case 2: // Método de alterar dados do paciente
+                        case 2: 
+                            editarPaciente();
                             break;
-                        case 3: // Método de conferir dados do paciente
+                        case 3: 
+                            conferirDadosPaciente();
                             break;
-                        case 4: // Método de buscar paciente
-                            break;
-                        case 5: // Método de excluir paciente
+                        case 4: 
+                            excluirPaciente();
                             break;
                         
                     }
@@ -84,17 +85,19 @@ public class Main{
                         case 0:
                             estadoAtual = EstadoMenu.PRINCIPAL;
                             break;
-                        case 1: // Método de cadastrar médico
+                        case 1: 
+                            cadastrarMedico();
                             break;
-                        case 2: // Método de alterar dados do médico
+                        case 2: 
+                            editarMedico();
                             break;
                         case 3: // Método de conferir dados do médico
+                            conferirDadosMedico();
                             break;
                         case 4: // Método de gerenciar agenda
                             break;
-                        case 5: // Método de buscar médico
-                            break;
-                        case 6: // Método de excluir médico
+                        case 5: 
+                            excluirMedico();
                             break;
                     }
                     break;
@@ -167,6 +170,7 @@ public class Main{
                     System.out.println("Opção inválida. Por favor, selecione novamente");
                     break;
             }
+        
         }
 
         }
@@ -269,8 +273,156 @@ public class Main{
                 System.out.println("Erro ao cadastrar paciente: " + e.getMessage());
 
             }
+
         }
-    }
+        private static void editarPaciente() {
+            System.out.println("-------- Editar Dados do Paciente -------");
+            System.out.print("Digite o CPF do paciente: ");
+            String cpf = scanner.nextLine();
+
+            Paciente paciente = Paciente.buscarPacientePorCpf(cpf);
+
+            if (paciente == null) {
+                System.out.println("\nPaciente não encontrado.");
+                return;
+            }
+
+            boolean editandoPaciente = true;
+            while (editandoPaciente) {
+                System.out.println("\n--- Editando Paciente: " + paciente.getNome() + " ---");
+                System.out.println("1. Editar Nome");
+                System.out.println("2. Editar Email");
+                System.out.println("3. Editar Telefone");
+                System.out.println("4. Editar Contato de Emergência");
+                System.out.println("5. Editar Status");
+                System.out.println("0. Voltar ao Menu Anterior");
+
+                int opcao = scanner.nextInt();
+                scanner.nextLine();
+
+                switch (opcao) {
+                    case 1:
+                        System.out.println("Nome atual: " + paciente.getNome());
+                        System.out.print("Digite o novo nome: ");
+                        String novoNome = scanner.nextLine();
+                        paciente.setNome(novoNome);
+                        System.out.println("Nome atualizado com sucesso!");
+                        break;
+
+                    case 2:
+                        System.out.println("Email atual: " + paciente.getEmail());
+                        System.out.print("Digite o novo email: ");
+                        String novoEmail = scanner.nextLine();
+                        paciente.setEmail(novoEmail); 
+                        System.out.println("Email atualizado com sucesso!");
+                        break;
+
+                    case 3:
+                        System.out.println("Telefone atual: " + paciente.getTelefone());
+                        System.out.print("Digite o novo telefone: ");
+                        String novoTelefone = scanner.nextLine();
+                        paciente.setTelefone(novoTelefone); 
+                        System.out.println("Telefone atualizado com sucesso!");
+                        break;
+
+                    case 4:
+                        System.out.println("Contato de Emergência atual: " + paciente.getNomeContatoEmergencia() + ", " + paciente.getNumeroContatoEmergencia());
+                        System.out.print("Digite o novo nome do contato: ");
+                        String novoNomeContato = scanner.nextLine();
+                        System.out.print("Digite o novo número do contato: ");
+                        String novoNumeroContato = scanner.nextLine();
+                        paciente.setNomeContatoEmergencia(novoNomeContato); 
+                        paciente.setNumeroContatoEmergencia(novoNumeroContato);
+                        System.out.println("Contato de emergência atualizado com sucesso!");
+                        break;
+
+                    case 0:
+                        editandoPaciente = false;
+                        System.out.println("Retornando ao menu de pacientes...");
+                        break;
+
+                    default:
+                        System.out.println("Opção inválida. Tente novamente.");
+                        break;
+                }
+            }
+        }
+
+        public static void conferirDadosPaciente() {
+            System.out.println("-------- Conferir Dados do Paciente -------");
+            System.out.print("Digite o CPF do paciente: ");
+            String cpf = scanner.nextLine();
+
+            Paciente paciente = Paciente.buscarPacientePorCpf(cpf);
+
+            if (paciente == null) {
+                System.out.println("\nPaciente não encontrado.");
+                return;
+            }
+
+            System.out.println("\n--- Dados do Paciente ---");
+            System.out.println("Nome: " + paciente.getNome());
+            System.out.println("CPF: " + paciente.getCpf());
+            System.out.println("Email: " + paciente.getEmail());
+            System.out.println("Telefone: " + paciente.getTelefone());
+            System.out.println("Idade: " + paciente.getIdade());
+            System.out.println("Sexo Biológico: " + paciente.getSexoBiologico());
+            System.out.println("Número do Prontuário: " + paciente.getNumeroProntuario());
+            System.out.println("Status: " + paciente.getStatus());
+            System.out.println("Tipo Sanguíneo: " + paciente.getTipoSanguineo());
+            if (paciente.getAlergias().isEmpty()) {
+                System.out.println("Alergias: Nenhuma");
+            } else {
+                String alergiasFormatadas = String.join(", ", paciente.getAlergias());
+                System.out.println("Alergias: " + alergiasFormatadas);
+            }
+
+            if (paciente.getMedicamentosEmUso().isEmpty()) {
+                System.out.println("Medicamentos em Uso: Nenhum");
+            } else {
+                String medicamentosFormatados = String.join(", ", paciente.getMedicamentosEmUso());
+                System.out.println("Medicamentos em Uso: " + medicamentosFormatados);
+            }
+
+            System.out.println("Contato de Emergência: " + paciente.getNomeContatoEmergencia() + " - " + paciente.getNumeroContatoEmergencia());
+            
+            Convenio convenio = paciente.getConvenio();
+            if (convenio != null) {
+                System.out.println("Convênio:");
+                System.out.println("  Nome do Plano: " + convenio.getNomeDoPlano());
+                System.out.println("  Número do Plano: " + convenio.getNumeroDoPlano());
+                System.out.println("  Tipo de Plano: " + convenio.getTipoDePlano());
+            } else {
+                System.out.println("Convênio: Não possui.");
+            }
+        }
+
+        public static void excluirPaciente() {
+            System.out.println("-------- Excluir Paciente -------");
+            System.out.print("Digite o CPF do paciente a ser excluído: ");
+            String cpf = scanner.nextLine();
+
+            Paciente paciente = Paciente.buscarPacientePorCpf(cpf);
+
+            if (paciente == null) {
+                System.out.println("\nPaciente não encontrado.");
+                return;
+            }
+
+            System.out.print("Tem certeza que deseja excluir o paciente " + paciente.getNome() + "? (S/N): ");
+            String confirmacao = scanner.nextLine().toUpperCase();
+
+            if (confirmacao.equalsIgnoreCase("S")) {
+                Paciente.excluir(paciente);
+                System.out.println("Paciente excluído com sucesso.");
+            } else {
+                System.out.println("Exclusão cancelada.");
+            }
+        }
+}
     
-    
+
+
+        
+ 
 
