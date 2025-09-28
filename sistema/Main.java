@@ -97,7 +97,7 @@ public class Main{
                         case 4: // Método de gerenciar agenda
                             break;
                         case 5: 
-                            //excluirMedico();
+                            excluirMedico();
                             break;
                     }
                     break;
@@ -552,6 +552,29 @@ public class Main{
             System.out.println("Especialidade: " + medico.getEspecialidade());
         }
         
+        private static void excluirMedico(){
+            System.out.println("-------- Excluir Médico -------");
+            System.out.print("Digite o CPF do médico a ser excluído: ");
+            String cpf = scanner.nextLine();
+
+            Medico medico = Medico.buscarMedicoPorCpf(cpf);
+
+            if (medico == null) {
+                System.out.println("\nMédico não encontrado.");
+                return;
+            }
+
+            System.out.print("Tem certeza que deseja excluir o médico " + medico.getNome() + "? (S/N): ");
+            String confirmacao = scanner.nextLine().toUpperCase();
+
+            if (confirmacao.equalsIgnoreCase("S")) {
+                Medico.excluir(medico);
+                System.out.println("Médico excluído com sucesso.");
+            } else {
+                System.out.println("Exclusão cancelada.");
+            }
+
+        }
 
 
 }
