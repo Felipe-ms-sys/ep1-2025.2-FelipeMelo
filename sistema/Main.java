@@ -119,9 +119,10 @@ public class Main{
                             reagendarConsulta();
                             break;
                         case 3: 
-                        cancelarConsulta();
+                            cancelarConsulta();
                             break;
-                        case 4: // Método de registrar diagnóstico
+                        case 4: 
+                            registrarDiagnostico();
                             break;
                         case 5: // Método de conferir consulta
                             break;
@@ -698,6 +699,80 @@ public class Main{
         else {
             System.out.println("Opção inválida.");
         }  
+    }
+
+    private static void registrarDiagnostico() {
+        System.out.println("-------- Registrar Diagnóstico -------");
+        System.out.print("Digite o CPF do paciente para ver suas consultas: ");
+        String cpfPaciente = scanner.nextLine();
+        Paciente paciente = Paciente.buscarPacientePorCpf(cpfPaciente);
+
+        if (paciente == null) {
+            System.out.println("Paciente não encontrado!");
+            return;
+        }
+
+        List<Consulta> consultasAgendadas = new ArrayList<>();
+        for (Consulta c : Consulta.listarTodas()) {
+            if (c.getPaciente().equals(paciente) && c.getStatus().equalsIgnoreCase("Agendada")) {
+                consultasAgendadas.add(c);
+            }
+        }
+
+        if (consultasAgendadas.isEmpty()) {
+            System.out.println("Nenhuma consulta agendada encontrada para este paciente.");
+            return;
+        }
+
+        System.out.println("\n--- Consultas Agendadas para " + paciente.getNome() + " ---");
+        java.time.format.DateTimeFormatter formato = java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy 'às' HH:mm");
+        for (int i = 0; i < consultasAgendadas.size(); i++) {
+            Consulta consultaAtual = consultasAgendadas.get(i);
+            System.out.println((i + 1) + ". " +
+                    "Dr(a): " + consultaAtual.getMedico().getNome() +
+                    " - Data: " + consultaAtual.getDataHoraConsulta().format(formato));
+        }
+        System.out.println("0. Voltar");
+
+        System.out.print("\nSelecione a consulta para registrar o diagnóstico: ");
+        int opcao = scanner.nextInt();
+        scanner.nextLine();
+
+        if (opcao == 0) {
+            System.out.println("Operação cancelada.");
+            return;
+        }
+        else if (opcao >= 1 && opcao <= consultasAgendadas.size()) {
+            Consulta consultaDiagnostico = consultasAgendadas.get(opcao - 1);
+
+            System.out.print("Digite o diagnóstico: ");
+            String diagnostico = scanner.nextLine();
+
+            System.out.print("Digite a prescrição de medicamentos: ");
+            String prescricao = scanner.nextLine();
+
+            consultaDiagnostico.setDiagnostico(diagnostico);
+            consultaDiagnostico.setPrescricao(prescricao);
+            consultaDiagnostico.setStatus("Realizada"); 
+
+            System.out.println("Diagnóstico e prescrição registrados com sucesso!");
+
+            System.out.print("\nÉ necessário registrar uma internação para este paciente? (S/N): ");
+            String respostaInternacao = scanner.nextLine().toUpperCase();
+
+            if (respostaInternacao.equalsIgnoreCase("S")) {
+        
+                System.out.println("Redirecionando para o registro de internação...");
+                // registrarInternacao(paciente);
+            } 
+            else {
+                System.out.println("Consulta finalizada.");
+            }    
+        } 
+        else {
+                System.out.println("Opção inválida.");
+            return;
+        }
     }
 }
         
