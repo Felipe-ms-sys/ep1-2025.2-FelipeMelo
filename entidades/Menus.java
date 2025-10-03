@@ -8,8 +8,7 @@ public class Menus{
         System.out.println("1. Gestão de Pacientes ");
         System.out.println("2. Gestão de Médicos ");
         System.out.println("3. Agendamento de Consultas ");
-        System.out.println("4. Gestão de Internações ");
-        System.out.println("5. Relatórios ");   
+        System.out.println("4. Gestão de Internações ");  
         System.out.println("\n0. Fechar Sistema \n");
         }
     
@@ -66,6 +65,4 @@ public class Menus{
         System.out.println("4. Pacientes internados ");
         System.out.println("\n0. Voltar ao Menu Principal\n ");
     }
-
-
 }

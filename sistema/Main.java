@@ -39,10 +39,7 @@ public class Main{
                             break;
                         case 4:
                             estadoAtual = EstadoMenu.INTERNACAO;
-                            break;
-                        case 5:
-                            estadoAtual = EstadoMenu.RELATORIOS;
-                            break;    
+                            break; 
                         default:
                             System.out.println("Opção inválida. Por favor, selecione novamente");
                             break;
@@ -150,24 +147,6 @@ public class Main{
                         case 5: // Método de histórico de internações
                             break;
                     }
-                    break;
-
-                case RELATORIOS:
-                    Menus.MenuRelatorios();
-                    int opcaoRelatorios = scanner.nextInt();
-                    scanner.nextLine();
-                    switch(opcaoRelatorios){
-
-                        case 0:
-                            estadoAtual = EstadoMenu.PRINCIPAL;
-                            break;
-                        case 1: // Método de relatório dos pacientes
-                            break;
-                        case 2: // Método de relatório das consultas
-                            break;
-                        case 3: // Método de pacientes internados
-                            break;
-                    }       
                     break;
 
                 default: 

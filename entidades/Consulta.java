@@ -15,70 +15,70 @@ public class Consulta {
     private String prescricao;    
 
 
-public Consulta(Paciente paciente, Medico medico, LocalDateTime dataConsulta) {
-    this.paciente = paciente;
-    this.medico = medico;
-    this.dataHoraConsulta = dataConsulta;
-    this.status = "Agendada";
-}
+    public Consulta(Paciente paciente, Medico medico, LocalDateTime dataConsulta) {
+        this.paciente = paciente;
+        this.medico = medico;
+        this.dataHoraConsulta = dataConsulta;
+        this.status = "Agendada";
+    }
 
-java.time.format.DateTimeFormatter formato = java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy 'às' HH:mm");
-@Override
-public String toString() {
-    return "Paciente: " + getPaciente().getNome() +
-           "\nMédico: " + getMedico().getNome() +
-           "\nData e Hora: " + getDataHoraConsulta().format(formato) +
-           "\nStatus: " + getStatus() +
-           (diagnostico != null ? "\nDiagnóstico: " + diagnostico : "Não registrado") +
-           (prescricao != null ? "\nPrescrição: " + prescricao : "Não registrada") + "\n";
-}
+    java.time.format.DateTimeFormatter formato = java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy 'às' HH:mm");
+    @Override
+    public String toString() {
+        return "Paciente: " + getPaciente().getNome() +
+            "\nMédico: " + getMedico().getNome() +
+            "\nData e Hora: " + getDataHoraConsulta().format(formato) +
+            "\nStatus: " + getStatus() +
+            (diagnostico != null ? "\nDiagnóstico: " + diagnostico : "Não registrado") +
+            (prescricao != null ? "\nPrescrição: " + prescricao : "Não registrada") + "\n";
+    }
 
-public static void adicionarConsulta(Consulta consulta) {
-    todasConsultas.add(consulta);
-}
+    public static void adicionarConsulta(Consulta consulta) {
+        todasConsultas.add(consulta);
+    }
 
-public static void removerConsulta(Consulta consulta) {
-    todasConsultas.remove(consulta);
-}
+    public static void removerConsulta(Consulta consulta) {
+        todasConsultas.remove(consulta);
+    }
 
-public static List<Consulta> listarTodas(){
-    return new ArrayList<>(todasConsultas);
-}
+    public static List<Consulta> listarTodas(){
+        return new ArrayList<>(todasConsultas);
+    }
 
-public Paciente getPaciente() { 
-    return paciente;
-}
+    public Paciente getPaciente() { 
+        return paciente;
+    }
 
-public Medico getMedico() {
-    return medico;
-}
+    public Medico getMedico() {
+        return medico;
+    }
 
-public LocalDateTime getDataHoraConsulta() {
-    return dataHoraConsulta;
-}
+    public LocalDateTime getDataHoraConsulta() {
+        return dataHoraConsulta;
+    }
 
-public String getStatus() {
-    return status;
-}
+    public String getStatus() {
+        return status;
+    }
 
-public void setStatus(String status) {
-    this.status = status;
-}
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
-public String getDiagnostico() {
-    return diagnostico;
-}
+    public String getDiagnostico() {
+        return diagnostico;
+    }
 
-public void setDiagnostico(String diagnostico) {
-    this.diagnostico = diagnostico;
-}
+    public void setDiagnostico(String diagnostico) {
+        this.diagnostico = diagnostico;
+    }
 
-public String getPrescricao() {
-    return prescricao;
-}
+    public String getPrescricao() {
+        return prescricao;
+    }
 
-public void setPrescricao(String prescricao) {
-    this.prescricao = prescricao;
-}
+    public void setPrescricao(String prescricao) {
+        this.prescricao = prescricao;
+    }
 
 }
