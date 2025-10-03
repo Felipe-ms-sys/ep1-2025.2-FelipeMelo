@@ -124,7 +124,8 @@ public class Main{
                         case 4: 
                             registrarDiagnostico();
                             break;
-                        case 5: // Método de conferir consulta
+                        case 5: 
+                            conferirConsultas(); //Histórico de consultas do paciente
                             break;
                     }
                     break;
@@ -772,6 +773,59 @@ public class Main{
         else {
                 System.out.println("Opção inválida.");
             return;
+        }
+    }
+
+    private static void conferirConsultas(){
+        System.out.println("-------- Conferir Consultas do Paciente -------");
+        System.out.print("Digite o CPF do paciente para ver suas consultas: ");
+        String cpfPaciente = scanner.nextLine();
+        Paciente paciente = Paciente.buscarPacientePorCpf(cpfPaciente);
+
+        if (paciente == null) {
+            System.out.println("Paciente não encontrado!");
+            return;
+        }
+
+        List<Consulta> consultasDoPaciente = new ArrayList<>();
+        for (Consulta c : Consulta.listarTodas()) {
+            if (c.getPaciente().equals(paciente) && (c.getStatus().equalsIgnoreCase("Agendada") || c.getStatus().equalsIgnoreCase("Realizada"))) {
+                consultasDoPaciente.add(c);
+            }
+        }
+
+        if (consultasDoPaciente.isEmpty()) {
+            System.out.println("Nenhuma consulta (agendada ou realizada) encontrada para este paciente.");
+            return;
+        }
+
+        System.out.println("\n--- Consultas de " + paciente.getNome() + " ---");
+        java.time.format.DateTimeFormatter formato = java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy 'às' HH:mm");
+        for (int i = 0; i < consultasDoPaciente.size(); i++) {
+            Consulta consultaAtual = consultasDoPaciente.get(i);
+            System.out.println((i + 1) + ". " +
+                    "Dr(a): " + consultaAtual.getMedico().getNome() +
+                    " - Data: " + consultaAtual.getDataHoraConsulta().format(formato) + 
+                    " - Status: " + consultaAtual.getStatus()); 
+        }
+        System.out.println("0. Voltar");
+
+        System.out.print("\nSelecione a consulta para ver os detalhes: ");
+        int opcao = scanner.nextInt();
+        scanner.nextLine();
+
+        if (opcao == 0) {
+            System.out.println("Operação cancelada.");
+            return;
+        }
+        else if (opcao >= 1 && opcao <= consultasDoPaciente.size()) {
+            Consulta consultaConferencia = consultasDoPaciente.get(opcao - 1);
+
+            System.out.println("\n--- Detalhes da Consulta ---");
+            System.out.println(consultaConferencia.toString());
+        } 
+        else {
+            System.out.println("Opção inválida.");
         }
     }
 }

@@ -4,8 +4,9 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class Consulta {
+    
     private static List<Consulta> todasConsultas = new ArrayList<>();
-
+    
     private Paciente paciente;
     private Medico medico;
     private LocalDateTime dataHoraConsulta;
@@ -19,6 +20,17 @@ public Consulta(Paciente paciente, Medico medico, LocalDateTime dataConsulta) {
     this.medico = medico;
     this.dataHoraConsulta = dataConsulta;
     this.status = "Agendada";
+}
+
+java.time.format.DateTimeFormatter formato = java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy 'às' HH:mm");
+@Override
+public String toString() {
+    return "Paciente: " + getPaciente().getNome() +
+           "\nMédico: " + getMedico().getNome() +
+           "\nData e Hora: " + getDataHoraConsulta().format(formato) +
+           "\nStatus: " + getStatus() +
+           (diagnostico != null ? "\nDiagnóstico: " + diagnostico : "Não registrado") +
+           (prescricao != null ? "\nPrescrição: " + prescricao : "Não registrada") + "\n";
 }
 
 public static void adicionarConsulta(Consulta consulta) {
