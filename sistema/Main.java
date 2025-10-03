@@ -116,16 +116,14 @@ public class Main{
                             agendarConsulta();
                             break;
                         case 2:
-                        //reagendarConsulta();
+                            reagendarConsulta();
                             break;
                         case 3: 
-                        //cancelarConsulta();
+                            // cancelarConsulta();
                             break;
-                        case 4: // Método de conferir agendamentos
+                        case 4: // Método de registrar diagnóstico
                             break;
-                        case 5: // Método de registrar diagnóstico
-                            break;
-                        case 6: // Método de conferir dados da consulta
+                        case 5: // Método de conferir consulta
                             break;
                     }
                     break;
@@ -176,8 +174,7 @@ public class Main{
             }
         
         }
-
-        }
+    }
 
         private static void cadastrarPaciente(){
             String status = "Ativo";
@@ -372,7 +369,8 @@ public class Main{
             if (confirmacao.equalsIgnoreCase("S")) {
                 Paciente.excluir(paciente);
                 System.out.println("Paciente excluído com sucesso.");
-            } else {
+            } 
+            else {
                 System.out.println("Exclusão cancelada.");
             }
         }
@@ -532,7 +530,8 @@ public class Main{
             if (confirmacao.equalsIgnoreCase("S")) {
                 Medico.excluir(medico);
                 System.out.println("Médico excluído com sucesso.");
-            } else {
+            } 
+            else {
                 System.out.println("Exclusão cancelada.");
             }
 
@@ -558,15 +557,15 @@ public class Main{
                 return;
             }
 
-            System.out.print("Digite a data e hora da consulta (yyyy/MM/dd HH:mm): ");
+            System.out.print("Digite a data e hora da consulta (dd/MM/yyyy HH:mm): ");
             String dataHora = scanner.nextLine();
             LocalDateTime dataHoraConsulta;
 
             try {
-                java.time.format.DateTimeFormatter formato = java.time.format.DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm");
+                java.time.format.DateTimeFormatter formato = java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
                 dataHoraConsulta = LocalDateTime.parse(dataHora, formato);
             } catch (java.time.format.DateTimeParseException e) {
-                System.out.println("Formato de data/hora inválido. Use o formato yyyy/MM/dd HH:mm.");
+                System.out.println("Formato de data/hora inválido. Use o formato dd/MM/yyyy HH:mm.");
                 return;
             }
 
@@ -578,12 +577,80 @@ public class Main{
             Consulta.adicionarConsulta(novaConsulta);
             System.out.println("Consulta agendada com sucesso para " + dataHoraConsulta + " com o Dr(a). " + medico.getNome() + ".");
         }
+        
+        private static void reagendarConsulta(){
+            java.time.format.DateTimeFormatter formato = java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy 'às' HH:mm");
+            System.out.println("-------- Reagendar Consulta -------");
+            System.out.print("Digite o CPF do paciente: ");
+            String cpfPaciente = scanner.nextLine();
+            Paciente paciente = Paciente.buscarPacientePorCpf(cpfPaciente);
 
-        // private static void cancelarConsulta(){
+            if (paciente == null) {
+                System.out.println("Paciente não encontrado! Tente novamente.");
+                return;
+            }
 
-        // }
+             List<Consulta> consultasDoPaciente = new ArrayList<>();
+            for (Consulta con : Consulta.listarTodas()) {
+                if (con.getPaciente().equals(paciente)) {
+                    consultasDoPaciente.add(con);
+                }   
+            }
 
+            if (consultasDoPaciente.isEmpty()) {
+            System.out.println("Nenhuma consulta encontrada para este paciente.");
+            return;
+            }
+            
+            System.out.println("\n--- Consultas Agendadas para " + paciente.getNome() + " ---");
+            
+            for (int i = 0; i < consultasDoPaciente.size(); i++) { //Cria uma lista numerada dinâmica
+                Consulta consultaAtual = consultasDoPaciente.get(i);
+                System.out.println((i + 1) + ". " +
+                        "Dr(a): " + consultaAtual.getMedico().getNome() +
+                        " - Data: " + consultaAtual.getDataHoraConsulta().format(formato));
+            }
+            System.out.println("0. Voltar");
+
+            System.out.print("\nSelecione a opção da consulta que deseja reagendar: ");
+            int opcao = scanner.nextInt();
+            scanner.nextLine();
+
+            if (opcao == 0) {
+            System.out.println("Operação cancelada.");
+            return;
+            }
+            else if (opcao >= 1 && opcao <= consultasDoPaciente.size()) {
+                Consulta consultaAntiga = consultasDoPaciente.get(opcao - 1);
+                System.out.print("Digite a NOVA data e hora da consulta (dd/MM/yyyy HH:mm): ");
+                String novaDataHoraReagendamento = scanner.nextLine();
+                LocalDateTime novaDataHora;
+
+                try {
+                    novaDataHora = LocalDateTime.parse(novaDataHoraReagendamento, java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
+                } catch (java.time.format.DateTimeParseException e) {
+                    System.out.println("Formato de data/hora inválido. Use o formato dd/MM/yyyy HH:mm.");
+                    return;
+                }
+
+                if (Medico.horarioOcupado(consultaAntiga.getMedico(), novaDataHora)) {
+                    System.out.println("O médico já possui uma consulta agendada nesse novo horário. Escolha outro momento.");
+                    return;
+                }
+
+                Consulta.removerConsulta(consultaAntiga);
+                Consulta novaConsulta = new Consulta(consultaAntiga.getPaciente(), consultaAntiga.getMedico(), novaDataHora);
+                  
+                Consulta.adicionarConsulta(novaConsulta);
+                System.out.println("Consulta reagendada com sucesso para " + novaDataHora.format(formato) + "!");
+            } 
+            else {
+                System.out.println("Opção inválida.");
+            }
+        }
+            
 }
+        
     
 
         

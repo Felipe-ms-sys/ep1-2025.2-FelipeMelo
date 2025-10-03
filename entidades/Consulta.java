@@ -25,6 +25,10 @@ public static void adicionarConsulta(Consulta consulta) {
     todasConsultas.add(consulta);
 }
 
+public static void removerConsulta(Consulta consulta) {
+    todasConsultas.remove(consulta);
+}
+
 public static List<Consulta> listarTodas(){
     return new ArrayList<>(todasConsultas);
 }
