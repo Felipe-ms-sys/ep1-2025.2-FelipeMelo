@@ -65,6 +65,4 @@ public void setPrescricao(String prescricao) {
     this.prescricao = prescricao;
 }
 
-
-
 }

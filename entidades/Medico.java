@@ -2,16 +2,28 @@ package Projeto1Poo.entidades;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-public abstract class Medico extends Pessoa{
+public class Medico extends Pessoa{
     private static List<Medico> todosMedicos = new ArrayList<>();
     private String crm;
+    private String especialidade;
+
+    private static List<String> especialidadesDisponiveis = new ArrayList<>(Arrays.asList(
+            "Cardiologista",
+            "Neurologista",
+            "Ortopedista"
+    ));
     
-    public Medico(String nome, String cpf, String email, int idade, String telefone, String sexoBiologico, String crm){
+    public Medico(String nome, String cpf, String email, int idade, String telefone, String sexoBiologico, String crm, String especialidade) {
         super(nome, cpf, email, idade, telefone, sexoBiologico);
+
+        if (!especialidadesDisponiveis.contains(especialidade)) {
+            throw new IllegalArgumentException("Especialidade inválida. Escolha entre: " + especialidadesDisponiveis);
+        }
         this.crm = crm;
-        
+        this.especialidade = especialidade;
     }
 
     public static void cadastrar(Medico medico) {
@@ -23,8 +35,24 @@ public abstract class Medico extends Pessoa{
         todosMedicos.add(medico);
     }
 
+    @Override
+    public String toString() {
+        return "Nome: " + getNome() + "\n" +
+        "CPF: " + getCpf() + "\n" +
+        "Idade: " + getIdade() + "\n" +
+        "Email: " + getEmail() + "\n" +
+        "Telefone: " + getTelefone() + "\n" +
+        "Sexo Biológico: " + getSexoBiologico() + "\n" +
+        "CRM: " + crm + "\n" +
+        "Especialidade: " + especialidade + "\n";
+    }
+
     public static List<Medico> listarTodos() {
         return new ArrayList<>(todosMedicos);
+    }
+
+    public static List<String> listarEspecialidadesDisponiveis() {
+        return new ArrayList<>(especialidadesDisponiveis);
     }
 
     public static Medico buscarMedicoPorCpf(String cpf){
@@ -48,7 +76,6 @@ public abstract class Medico extends Pessoa{
         return false; 
     }
 
-
     public String getCrm(){
         return crm;
     }
@@ -57,7 +84,16 @@ public abstract class Medico extends Pessoa{
         this.crm = crm;
     }
 
-    public abstract String getEspecialidade();
+    public String getEspecialidade() {
+        return especialidade;
+    }
+
+    public void setEspecialidade(String especialidade) {
+        if (!especialidadesDisponiveis.contains(especialidade)) {
+            throw new IllegalArgumentException("Especialidade inválida. Escolha entre: " + especialidadesDisponiveis);
+        }
+        this.especialidade = especialidade;
+    }
     
 }
     

@@ -11,12 +11,9 @@ public class Paciente extends Pessoa {
     private List<String> alergias;
     private List<String> medicamentosEmUso;
 
-    private String nomeContatoEmergencia;
-    private String numeroContatoEmergencia;
-    private String parentescoContatoDeEmergencia;
     private Convenio convenio;
 
-    public Paciente(String nome, String cpf, String email, int idade, String telefone, String sexoBiologico, String numeroProntuario, String status, String tipoSanguineo, List<String> alergias, List<String> medicamentosEmUso, String nomeContatoEmergencia, String numeroContatoEmergencia, String parentescoContatoDeEmergencia, Convenio convenio) {
+    public Paciente(String nome, String cpf, String email, int idade, String telefone, String sexoBiologico, String numeroProntuario, String status, String tipoSanguineo, List<String> alergias, List<String> medicamentosEmUso, Convenio convenio) {
 
         super(nome, cpf, email, idade, telefone, sexoBiologico);
         this.numeroProntuario = numeroProntuario;
@@ -24,9 +21,6 @@ public class Paciente extends Pessoa {
         this.tipoSanguineo = tipoSanguineo;
         this.alergias = alergias;
         this.medicamentosEmUso = medicamentosEmUso;
-        this.nomeContatoEmergencia = nomeContatoEmergencia;
-        this.numeroContatoEmergencia = numeroContatoEmergencia;
-        this.parentescoContatoDeEmergencia = parentescoContatoDeEmergencia;
         this.convenio = convenio;
     }
 
@@ -39,6 +33,7 @@ public class Paciente extends Pessoa {
         todosPacientes.add(paciente);
     }
 
+    
     public static List<Paciente> listarTodos() {
         return new ArrayList<>(todosPacientes);
     }
@@ -93,30 +88,6 @@ public class Paciente extends Pessoa {
 
     public void setMedicamentosEmUso(List<String> medicamentosEmUso) {
         this.medicamentosEmUso = medicamentosEmUso;
-    }
-
-    public String getNomeContatoEmergencia() {
-        return nomeContatoEmergencia;
-    }
-
-    public void setNomeContatoEmergencia(String nomeContatoEmergencia) {
-        this.nomeContatoEmergencia = nomeContatoEmergencia;
-    }
-
-    public String getNumeroContatoEmergencia() {
-        return numeroContatoEmergencia;
-    }
-
-    public void setNumeroContatoEmergencia(String numeroContatoEmergencia) {
-        this.numeroContatoEmergencia = numeroContatoEmergencia;
-    }
-
-    public String getParentescoContatoDeEmergencia() {
-        return parentescoContatoDeEmergencia;
-    }
-
-    public void setParentescoContatoDeEmergencia(String parentescoContatoDeEmergencia) {
-        this.parentescoContatoDeEmergencia = parentescoContatoDeEmergencia;
     }
     
     public Convenio getConvenio() {

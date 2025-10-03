@@ -257,19 +257,9 @@ public class Main{
 
                 convenio = new Convenio(nomeDoPlano, numeroDoPlano, tipoDePlano);
             }     
-            
-            
-            System.out.print("Nome do Contato de Emergência: ");
-            String nomeContatoEmergencia = scanner.nextLine();
-
-            System.out.print("Número do Contato de Emergência: ");
-            String numeroContatoEmergencia = scanner.nextLine();
-
-            System.out.print("Parentesco com o Contato de Emergência: ");
-            String parentescoContatoDeEmergencia = scanner.nextLine();
 
             try {
-                Paciente novoPaciente = new Paciente(nome, cpf, email, idade, telefone, sexoBiologico, numeroProntuario, status, tipoSanguineo, alergias, medicamentosEmUso, nomeContatoEmergencia, numeroContatoEmergencia, parentescoContatoDeEmergencia, convenio);
+                Paciente novoPaciente = new Paciente(nome, cpf, email, idade, telefone, sexoBiologico, numeroProntuario, status, tipoSanguineo, alergias, medicamentosEmUso, convenio);
 
                 Paciente.cadastrar(novoPaciente);
                 System.out.println("Paciente cadastrado! Número do Prontuário: " + numeroProntuario + "\b");
@@ -277,8 +267,8 @@ public class Main{
                 System.out.println("Erro ao cadastrar paciente: " + e.getMessage());
 
             }
-
         }
+
         private static void editarPaciente() {
             System.out.println("-------- Editar Dados do Paciente -------");
             System.out.print("Digite o CPF do paciente: ");
@@ -297,8 +287,7 @@ public class Main{
                 System.out.println("1. Editar Nome");
                 System.out.println("2. Editar Email");
                 System.out.println("3. Editar Telefone");
-                System.out.println("4. Editar Contato de Emergência");
-                System.out.println("5. Editar Status");
+                System.out.println("4. Editar Status");
                 System.out.println("0. Voltar ao Menu Anterior");
 
                 int opcao = scanner.nextInt();
@@ -330,14 +319,11 @@ public class Main{
                         break;
 
                     case 4:
-                        System.out.println("Contato de Emergência atual: " + paciente.getNomeContatoEmergencia() + ", " + paciente.getNumeroContatoEmergencia());
-                        System.out.print("Digite o novo nome do contato: ");
-                        String novoNomeContato = scanner.nextLine();
-                        System.out.print("Digite o novo número do contato: ");
-                        String novoNumeroContato = scanner.nextLine();
-                        paciente.setNomeContatoEmergencia(novoNomeContato); 
-                        paciente.setNumeroContatoEmergencia(novoNumeroContato);
-                        System.out.println("Contato de emergência atualizado com sucesso!");
+                        System.out.println("Status atual: " + paciente.getStatus());
+                        System.out.print("Digite o novo status (Ativo/Inativo): ");
+                        String novoStatus = scanner.nextLine();
+                        paciente.setStatus(novoStatus);
+                        System.out.println("Status atualizado com sucesso!");
                         break;
 
                     case 0:
@@ -388,8 +374,6 @@ public class Main{
                 System.out.println("Medicamentos em Uso: " + medicamentosFormatados);
             }
 
-            System.out.println("Contato de Emergência: " + paciente.getNomeContatoEmergencia() + " - " + paciente.getNumeroContatoEmergencia());
-            
             Convenio convenio = paciente.getConvenio();
             if (convenio != null) {
                 System.out.println("Convênio:");
@@ -449,29 +433,16 @@ public class Main{
             System.out.print("Crm: ");
             String crm = scanner.nextLine();
         
-            System.out.println("Selecione a especialidade: ");
-            System.out.println("1. Cardiologista");
-            System.out.println("2. Neurologista");
-            System.out.println("3. Ortopedista");
-
-            int opcaoEspecialidade = scanner.nextInt();
-            scanner.nextLine();
+            System.out.print("Especialidade (Digite o nome completo): ");
+            System.out.println(Medico.listarEspecialidadesDisponiveis());
+            String especialidade = scanner.nextLine();
 
             try {
-                Medico novoMedico;
-                if (opcaoEspecialidade == 1) {
-                    novoMedico = new Cardiologista(nome, cpf, email, idade, telefone, sexoBiologico, crm);
-                } else if (opcaoEspecialidade == 2) {
-                    novoMedico = new Neurologista(nome, cpf, email, idade, telefone, sexoBiologico, crm);
-                } else if (opcaoEspecialidade == 3) {
-                    novoMedico = new Ortopedista(nome, cpf, email, idade, telefone, sexoBiologico, crm);
-                } else {
-                    System.out.println("Opção inválida!");
-                    return;
-                }
-
+                Medico novoMedico;          
+                novoMedico = new Medico(nome, cpf, email, idade, telefone, sexoBiologico, crm, especialidade);
+                
                 Medico.cadastrar(novoMedico);
-                System.out.println("Médico (" + novoMedico.getEspecialidade() + ") cadastrado com sucesso!");
+                System.out.println("Dr.  " + novoMedico.getNome() +"(" + novoMedico.getEspecialidade() + ") cadastrado com sucesso!\n");
             } catch (IllegalArgumentException e) {
                 System.out.println("Erro ao cadastrar médico: " + e.getMessage());
             }
@@ -486,7 +457,7 @@ public class Main{
             Medico medico = Medico.buscarMedicoPorCpf(cpf);
 
             if (medico == null) {
-                System.out.println("\nMédico não encontrado.");
+                System.out.println("\nMédico não encontrado.\n");
                 return;
             }
 
@@ -529,7 +500,11 @@ public class Main{
                         break;
 
                     case 4:
-                        medico = editarEspecialidade(medico); 
+                        System.out.println("Especialidade atual: " + medico.getEspecialidade());
+                        System.out.println(Medico.listarEspecialidadesDisponiveis());
+                        System.out.print("Digite a nova especialidade (nome completo): ");
+                        String novaEspecialidade = scanner.nextLine();
+                        medico.setEspecialidade(novaEspecialidade); 
                         System.out.println("Especialidade atualizada com sucesso!");
                         break;
 
@@ -550,43 +525,8 @@ public class Main{
                         System.out.println("Opção inválida. Tente novamente.");
                         break;
                         
-                    }
                 }
-        }
-
-        private static Medico editarEspecialidade(Medico medicoAntigo) {
-            System.out.println("Especialidade atual: " + medicoAntigo.getEspecialidade());
-            System.out.println("Selecione a nova especialidade:");
-            System.out.println("1. Cardiologia");
-            System.out.println("2. Neurologia");
-            System.out.println("3. Ortopedia");
-            
-            int novaOpcao = scanner.nextInt();
-            scanner.nextLine();
-
-            Medico novoMedico = null;
-
-            switch (novaOpcao) {
-                case 1:
-                    novoMedico = new Cardiologista(medicoAntigo.getNome(), medicoAntigo.getCpf(), medicoAntigo.getEmail(), medicoAntigo.getIdade(), medicoAntigo.getTelefone(), medicoAntigo.getSexoBiologico(), medicoAntigo.getCrm());
-                    break;
-                case 2:
-                    novoMedico = new Neurologista(medicoAntigo.getNome(), medicoAntigo.getCpf(), medicoAntigo.getEmail(), medicoAntigo.getIdade(), medicoAntigo.getTelefone(), medicoAntigo.getSexoBiologico(), medicoAntigo.getCrm());
-                    break;
-                case 3:
-                    novoMedico = new Ortopedista(medicoAntigo.getNome(), medicoAntigo.getCpf(), medicoAntigo.getEmail(), medicoAntigo.getIdade(), medicoAntigo.getTelefone(), medicoAntigo.getSexoBiologico(), medicoAntigo.getCrm());
-                    break;
-                default:
-                    System.out.println("Opção inválida. Nenhuma alteração foi feita.");
-                    return medicoAntigo; 
             }
-
-            Medico.excluir(medicoAntigo); 
-            Medico.cadastrar(novoMedico); 
-
-            System.out.println("Médico atualizado para a especialidade: " + novoMedico.getEspecialidade());
-            
-            return novoMedico;
         }
 
         private static void conferirDadosMedico(){
@@ -602,14 +542,7 @@ public class Main{
             }
 
             System.out.println("\n--- Dados do Médico ---");
-            System.out.println("Nome: " + medico.getNome());
-            System.out.println("CPF: " + medico.getCpf());
-            System.out.println("Email: " + medico.getEmail());
-            System.out.println("Telefone: " + medico.getTelefone());
-            System.out.println("Idade: " + medico.getIdade());
-            System.out.println("Sexo Biológico: " + medico.getSexoBiologico());
-            System.out.println("CRM: " + medico.getCrm());
-            System.out.println("Especialidade: " + medico.getEspecialidade());
+            System.out.println(medico.toString());
         }
         
         private static void excluirMedico(){
@@ -677,9 +610,9 @@ public class Main{
             System.out.println("Consulta agendada com sucesso para " + dataHoraConsulta + " com o Dr(a). " + medico.getNome() + ".");
         }
 
-        private static void cancelarConsulta(){
+        // private static void cancelarConsulta(){
 
-        }
+        // }
 
 }
     
