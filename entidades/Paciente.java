@@ -16,9 +16,6 @@ public class Paciente extends Pessoa {
     private String parentescoContatoDeEmergencia;
     private Convenio convenio;
 
-
-
-
     public Paciente(String nome, String cpf, String email, int idade, String telefone, String sexoBiologico, String numeroProntuario, String status, String tipoSanguineo, List<String> alergias, List<String> medicamentosEmUso, String nomeContatoEmergencia, String numeroContatoEmergencia, String parentescoContatoDeEmergencia, Convenio convenio) {
 
         super(nome, cpf, email, idade, telefone, sexoBiologico);

@@ -1,5 +1,6 @@
 package Projeto1Poo.entidades;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,6 +38,16 @@ public abstract class Medico extends Pessoa{
     public static void excluir(Medico medico) {
         todosMedicos.remove(medico);
     }
+
+    public static boolean horarioOcupado(Medico medico, LocalDateTime dataHora) {
+        for (Consulta i : Consulta.listarTodas()) {
+            if (i.getMedico().equals(medico) && i.getDataHoraConsulta().isEqual(dataHora)) {
+                return true; 
+            }
+        }
+        return false; 
+    }
+
 
     public String getCrm(){
         return crm;

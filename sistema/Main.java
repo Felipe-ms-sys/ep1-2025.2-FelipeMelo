@@ -2,6 +2,7 @@ package Projeto1Poo.sistema;
 
 import Projeto1Poo.entidades.*;
 import java.util.*;
+import java.time.LocalDateTime;
 
 public class Main{
     
@@ -111,15 +112,20 @@ public class Main{
                         case 0:
                             estadoAtual = EstadoMenu.PRINCIPAL;
                             break;
-                        case 1: // Método de agendar nova consulta
+                        case 1: 
+                            agendarConsulta();
                             break;
-                        case 2: // Método de cancelar consulta
+                        case 2:
+                        //reagendarConsulta();
                             break;
-                        case 3: // Método de conferir agendamentos
+                        case 3: 
+                        //cancelarConsulta();
                             break;
-                        case 4: // Método de registrar diagnóstico
+                        case 4: // Método de conferir agendamentos
                             break;
-                        case 5: // Método de conferir dados da consulta
+                        case 5: // Método de registrar diagnóstico
+                            break;
+                        case 6: // Método de conferir dados da consulta
                             break;
                     }
                     break;
@@ -157,11 +163,9 @@ public class Main{
                             break;
                         case 1: // Método de relatório dos pacientes
                             break;
-                        case 2: // Método de relatório dos médicos
+                        case 2: // Método de relatório das consultas
                             break;
-                        case 3: // Método de relatório das consultas
-                            break;
-                        case 4: // Método de pacientes internados
+                        case 3: // Método de pacientes internados
                             break;
                     }       
                     break;
@@ -445,7 +449,7 @@ public class Main{
             System.out.print("Crm: ");
             String crm = scanner.nextLine();
         
-            System.out.print("Selecione a especialidade: ");
+            System.out.println("Selecione a especialidade: ");
             System.out.println("1. Cardiologista");
             System.out.println("2. Neurologista");
             System.out.println("3. Ortopedista");
@@ -528,7 +532,7 @@ public class Main{
                         medico = editarEspecialidade(medico); 
                         System.out.println("Especialidade atualizada com sucesso!");
                         break;
-                        
+
                     case 5:
                         System.out.println("CRM atual: " + medico.getCrm());
                         System.out.print("Digite o novo CRM: ");
@@ -632,10 +636,53 @@ public class Main{
 
         }
 
+        private static void agendarConsulta(){
+            System.out.println("-------- Agendar Nova Consulta -------");
+            System.out.print("Digite o CPF do paciente: ");
+            String cpfPaciente = scanner.nextLine();
+            Paciente paciente = Paciente.buscarPacientePorCpf(cpfPaciente);
+
+            if (paciente == null) {
+                System.out.println("Paciente não encontrado! Tente novamente.");
+                return;
+            }
+
+            System.out.print("Digite o CPF do médico: ");
+            String cpfMedico = scanner.nextLine();
+            Medico medico = Medico.buscarMedicoPorCpf(cpfMedico);
+
+            if (medico == null) {
+                System.out.println("Médico não encontrado! Tente novamente.");
+                return;
+            }
+
+            System.out.print("Digite a data e hora da consulta (yyyy/MM/dd HH:mm): ");
+            String dataHora = scanner.nextLine();
+            LocalDateTime dataHoraConsulta;
+
+            try {
+                java.time.format.DateTimeFormatter formato = java.time.format.DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm");
+                dataHoraConsulta = LocalDateTime.parse(dataHora, formato);
+            } catch (java.time.format.DateTimeParseException e) {
+                System.out.println("Formato de data/hora inválido. Use o formato yyyy/MM/dd HH:mm.");
+                return;
+            }
+
+            if (Medico.horarioOcupado(medico, dataHoraConsulta)) {
+                System.out.println("O médico já possui uma consulta agendada nesse horário. Escolha outro horário.");
+                return;
+            }
+            Consulta novaConsulta = new Consulta(paciente, medico, dataHoraConsulta);
+            Consulta.adicionarConsulta(novaConsulta);
+            System.out.println("Consulta agendada com sucesso para " + dataHoraConsulta + " com o Dr(a). " + medico.getNome() + ".");
+        }
+
+        private static void cancelarConsulta(){
+
+        }
 
 }
     
-
 
         
  
