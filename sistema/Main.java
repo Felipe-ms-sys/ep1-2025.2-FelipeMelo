@@ -262,9 +262,9 @@ public class Main{
                 Paciente novoPaciente = new Paciente(nome, cpf, email, idade, telefone, sexoBiologico, numeroProntuario, status, tipoSanguineo, alergias, medicamentosEmUso, convenio);
 
                 Paciente.cadastrar(novoPaciente);
-                System.out.println("Paciente cadastrado! Número do Prontuário: " + numeroProntuario + "\b");
+                System.out.println("\nPaciente cadastrado! Número do Prontuário: " + numeroProntuario + "\n");
             } catch (IllegalArgumentException e) {
-                System.out.println("Erro ao cadastrar paciente: " + e.getMessage());
+                System.out.println("\nErro ao cadastrar paciente: " + e.getMessage());
 
             }
         }
@@ -351,38 +351,7 @@ public class Main{
             }
 
             System.out.println("\n--- Dados do Paciente ---");
-            System.out.println("Nome: " + paciente.getNome());
-            System.out.println("CPF: " + paciente.getCpf());
-            System.out.println("Email: " + paciente.getEmail());
-            System.out.println("Telefone: " + paciente.getTelefone());
-            System.out.println("Idade: " + paciente.getIdade());
-            System.out.println("Sexo Biológico: " + paciente.getSexoBiologico());
-            System.out.println("Número do Prontuário: " + paciente.getNumeroProntuario());
-            System.out.println("Status: " + paciente.getStatus());
-            System.out.println("Tipo Sanguíneo: " + paciente.getTipoSanguineo());
-            if (paciente.getAlergias().isEmpty()) {
-                System.out.println("Alergias: Nenhuma");
-            } else {
-                String alergiasFormatadas = String.join(", ", paciente.getAlergias());
-                System.out.println("Alergias: " + alergiasFormatadas);
-            }
-
-            if (paciente.getMedicamentosEmUso().isEmpty()) {
-                System.out.println("Medicamentos em Uso: Nenhum");
-            } else {
-                String medicamentosFormatados = String.join(", ", paciente.getMedicamentosEmUso());
-                System.out.println("Medicamentos em Uso: " + medicamentosFormatados);
-            }
-
-            Convenio convenio = paciente.getConvenio();
-            if (convenio != null) {
-                System.out.println("Convênio:");
-                System.out.println("  Nome do Plano: " + convenio.getNomeDoPlano());
-                System.out.println("  Número do Plano: " + convenio.getNumeroDoPlano());
-                System.out.println("  Tipo de Plano: " + convenio.getTipoDePlano());
-            } else {
-                System.out.println("Convênio: Não possui.");
-            }
+            System.out.println(paciente.toString());
         }
 
         private static void excluirPaciente() {
@@ -442,7 +411,7 @@ public class Main{
                 novoMedico = new Medico(nome, cpf, email, idade, telefone, sexoBiologico, crm, especialidade);
                 
                 Medico.cadastrar(novoMedico);
-                System.out.println("Dr.  " + novoMedico.getNome() +"(" + novoMedico.getEspecialidade() + ") cadastrado com sucesso!\n");
+                System.out.println("Dr. " + novoMedico.getNome() +" (" + novoMedico.getEspecialidade() + ") cadastrado com sucesso!\n");
             } catch (IllegalArgumentException e) {
                 System.out.println("Erro ao cadastrar médico: " + e.getMessage());
             }

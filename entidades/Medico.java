@@ -37,14 +37,14 @@ public class Medico extends Pessoa{
 
     @Override
     public String toString() {
-        return "Nome: " + getNome() + "\n" +
-        "CPF: " + getCpf() + "\n" +
-        "Idade: " + getIdade() + "\n" +
-        "Email: " + getEmail() + "\n" +
-        "Telefone: " + getTelefone() + "\n" +
-        "Sexo Biológico: " + getSexoBiologico() + "\n" +
-        "CRM: " + crm + "\n" +
-        "Especialidade: " + especialidade + "\n";
+        return "Nome: " + getNome() +
+        "\nCPF: " + getCpf() + 
+        "\nIdade: " + getIdade() + 
+        "\nEmail: " + getEmail() + 
+        "\nTelefone: " + getTelefone() +
+        "\nSexo Biológico: " + getSexoBiologico() + 
+        "\nCRM: " + crm + 
+        "\nEspecialidade: " + especialidade + "\n";
     }
 
     public static List<Medico> listarTodos() {

@@ -33,7 +33,22 @@ public class Paciente extends Pessoa {
         todosPacientes.add(paciente);
     }
 
-    
+    @Override
+    public String toString() {
+        return "Número do Prontuário: " + numeroProntuario + 
+               "\nNome: " + getNome() + 
+               "\nCPF: " + getCpf() + 
+               "\nEmail: " + getEmail() + 
+               "\nIdade: " + getIdade() + 
+               "\nTelefone: " + getTelefone() + 
+               "\nSexo Biológico: " + getSexoBiologico() +  
+               "\nStatus: " + status + 
+               "\nTipo Sanguíneo: " + tipoSanguineo + 
+               "\nAlergias: " + (alergias.isEmpty() ? "Nenhuma" : String.join(", ", alergias)) +
+               "\nMedicamentos em Uso: " + (medicamentosEmUso.isEmpty() ? "Nenhum" : String.join(", ", medicamentosEmUso)) +
+               "\nConvênio: " + (convenio != null ? "\nNome do plano: " + convenio.getNomeDoPlano() + "\nN° do plano: " + convenio.getNumeroDoPlano() + "\nTipo do plano: " + convenio.getTipoDePlano() + "\n" : "Não possui.\n");
+        }
+
     public static List<Paciente> listarTodos() {
         return new ArrayList<>(todosPacientes);
     }
