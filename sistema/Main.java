@@ -136,15 +136,20 @@ public class Main{
                         case 0:
                             estadoAtual = EstadoMenu.PRINCIPAL;
                             break;
-                        case 1: // Método de registrar nova internação
+                        case 1: 
+                            //registrarInternacao();
                             break;
-                        case 2: // Método de cancelar internação
+                        case 2: 
+                            //cancelarInternacao();
                             break;
-                        case 3: // Método de registrar alta de paciente
+                        case 3:
+                            //registrarAlta();
                             break;
-                        case 4: // Método de consultar internações
+                        case 4: 
+                            //consultarInternacoes();
                             break;
-                        case 5: // Método de histórico de internações
+                        case 5: 
+                            //conferirInternacoes(); //Histórico de internações do paciente
                             break;
                     }
                     break;
@@ -413,7 +418,7 @@ public class Main{
                         System.out.println("Convênio removido com sucesso!");
                     }
                     break;
-                    
+
                 case 11:
                     System.out.println("Status atual: " + paciente.getStatus());
                     System.out.print("Digite o novo status (Ativo/Inativo): ");
