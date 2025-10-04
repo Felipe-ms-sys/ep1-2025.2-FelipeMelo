@@ -263,9 +263,16 @@ public class Main{
         while (editandoPaciente) {
             System.out.println("\n--- Editando Paciente: " + paciente.getNome() + " ---");
             System.out.println("1. Editar Nome");
-            System.out.println("2. Editar Email");
-            System.out.println("3. Editar Telefone");
-            System.out.println("4. Editar Status");
+            System.out.println("2. Editar CPF");
+            System.out.println("3. Editar Idade");
+            System.out.println("4. Editar Email");
+            System.out.println("5. Editar Telefone");
+            System.out.println("6. Editar Sexo biológico");
+            System.out.println("7. Editar tipo sanguíneo");
+            System.out.println("8. Editar alergias");
+            System.out.println("9. Editar medicamentos em uso");
+            System.out.println("10. Editar convênio");
+            System.out.println("11. Editar Status");
             System.out.println("0. Voltar ao Menu Anterior");
 
             int opcao = scanner.nextInt();
@@ -281,6 +288,27 @@ public class Main{
                     break;
 
                 case 2:
+                    System.out.println("CPF atual: " + paciente.getCpf());
+                    System.out.print("Digite o novo CPF: ");
+                    String novoCpf = scanner.nextLine();
+                    if (Paciente.buscarPacientePorCpf(novoCpf) != null) {
+                        System.out.println("Erro: CPF já cadastrado para outro paciente.");
+                    } else {
+                        paciente.setCpf(novoCpf);
+                        System.out.println("CPF atualizado com sucesso!");
+                    }
+                    break;
+
+                case 3:
+                    System.out.println("Idade atual: " + paciente.getIdade());
+                    System.out.print("Digite a nova idade: ");
+                    int novaIdade = scanner.nextInt();
+                    scanner.nextLine(); 
+                    paciente.setIdade(novaIdade);
+                    System.out.println("Idade atualizada com sucesso!");
+                    break;
+
+                case 4:
                     System.out.println("Email atual: " + paciente.getEmail());
                     System.out.print("Digite o novo email: ");
                     String novoEmail = scanner.nextLine();
@@ -288,7 +316,7 @@ public class Main{
                     System.out.println("Email atualizado com sucesso!");
                     break;
 
-                case 3:
+                case 5:
                     System.out.println("Telefone atual: " + paciente.getTelefone());
                     System.out.print("Digite o novo telefone: ");
                     String novoTelefone = scanner.nextLine();
@@ -296,7 +324,97 @@ public class Main{
                     System.out.println("Telefone atualizado com sucesso!");
                     break;
 
-                case 4:
+                case 6:
+                    System.out.println("Sexo Biológico atual: " + paciente.getSexoBiologico());
+                    System.out.print("Digite o novo Sexo Biológico (M/F): ");
+                    String novoSexoBiologico = scanner.nextLine().toUpperCase();
+                    paciente.setSexoBiologico(novoSexoBiologico); 
+                    System.out.println("Sexo Biológico atualizado com sucesso!");
+                    break;
+
+                case 7:
+                    System.out.println("Tipo Sanguíneo atual: " + paciente.getTipoSanguineo());
+                    System.out.print("Digite o novo tipo sanguíneo: ");
+                    String novoTipoSanguineo = scanner.nextLine();
+                    paciente.setTipoSanguineo(novoTipoSanguineo);
+                    System.out.println("Tipo sanguíneo atualizado com sucesso!");
+                    break;
+
+                case 8:
+                    System.out.println("Alergias atuais: " + paciente.getAlergias());
+                    List<String> novasAlergias = new ArrayList<>();
+                    System.out.print("O paciente possui alergias? (S/N): ");
+                    String respostaAlergia = scanner.nextLine().toUpperCase();
+
+                    if (respostaAlergia.equalsIgnoreCase("S")) {
+                        System.out.print("Digite as alergias (separadas por vírgula): ");
+                        String alergiasPaciente = scanner.nextLine();
+                        
+                        if (alergiasPaciente != null && !alergiasPaciente.trim().isEmpty()) {
+                            
+                            String[] alergiasArray = alergiasPaciente.split(",");
+                            for (String alergia : alergiasArray) {
+                                novasAlergias.add(alergia.trim());
+                            }
+                        }
+                    }
+                    paciente.setAlergias(novasAlergias);
+                    System.out.println("Alergias atualizadas com sucesso!");
+                    break;
+
+                case 9:
+                    System.out.println("Medicamentos em uso atuais: " + paciente.getMedicamentosEmUso());
+                    List<String> novosMedicamentosEmUso = new ArrayList<>();
+                    System.out.print("O paciente utiliza algum medicamento? (S/N): ");
+                    String respostaMedicamento = scanner.nextLine().toUpperCase();
+
+                    if (respostaMedicamento.equalsIgnoreCase("S")) {
+                        System.out.print("Digite os medicamentos (separados por vírgula): ");
+                        String medicamentoEmUsoPaciente = scanner.nextLine();
+                        
+                        if (medicamentoEmUsoPaciente != null && !medicamentoEmUsoPaciente.trim().isEmpty()) {
+                            
+                            String[] medicamentosEmUsoArray = medicamentoEmUsoPaciente.split(",");
+                            for (String medicamentos : medicamentosEmUsoArray) {
+                                novosMedicamentosEmUso.add(medicamentos.trim());
+                            }
+                        }
+                    }
+                    paciente.setMedicamentosEmUso(novosMedicamentosEmUso);
+                    System.out.println("Medicamentos em uso atualizados com sucesso!");
+                    break;
+
+                case 10:
+                    Convenio convenioAtual = paciente.getConvenio();
+                    if (convenioAtual != null) {
+                        System.out.println("Convênio atual: " + convenioAtual);
+                    } else {
+                        System.out.println("O paciente não possui convênio.");
+                    }
+
+                    System.out.print("O paciente tem plano de saúde? (S/N): ");
+                    String respostaConvenio = scanner.nextLine().toUpperCase();
+
+                    if (respostaConvenio.equalsIgnoreCase("S")){
+                        System.out.print("Nome do Plano: ");
+                        String nomeDoPlano = scanner.nextLine();
+
+                        System.out.print("Número do Plano: ");
+                        String numeroDoPlano = scanner.nextLine();
+
+                        System.out.print("Tipo de Plano: ");
+                        String tipoDePlano = scanner.nextLine();
+
+                        Convenio novoConvenio = new Convenio(nomeDoPlano, numeroDoPlano, tipoDePlano);
+                        paciente.setConvenio(novoConvenio);
+                        System.out.println("Convênio atualizado com sucesso!");
+                    } else {
+                        paciente.setConvenio(null);
+                        System.out.println("Convênio removido com sucesso!");
+                    }
+                    break;
+                    
+                case 11:
                     System.out.println("Status atual: " + paciente.getStatus());
                     System.out.print("Digite o novo status (Ativo/Inativo): ");
                     String novoStatus = scanner.nextLine();
@@ -413,10 +531,13 @@ public class Main{
         while (editandoMedico) {
             System.out.println("\n--- Editando Médico: " + medico.getNome() + " ---");
             System.out.println("1. Editar Nome");
-            System.out.println("2. Editar Email");
-            System.out.println("3. Editar Telefone");
-            System.out.println("4. Editar Especialidade");
-            System.out.println("5. Editar CRM");
+            System.out.println("2. Editar CPF");
+            System.out.println("3. Editar Idade");
+            System.out.println("4. Editar Email");
+            System.out.println("5. Editar Telefone");
+            System.out.println("6. Editar Sexo Biológico");
+            System.out.println("7. Editar Especialidade");
+            System.out.println("8. Editar CRM");
             System.out.println("0. Voltar ao Menu Anterior");
 
             int opcao = scanner.nextInt();
@@ -432,6 +553,27 @@ public class Main{
                     break;
 
                 case 2:
+                    System.out.println("CPF atual: " + medico.getCpf());
+                    System.out.print("Digite o novo CPF: ");
+                    String novoCpf = scanner.nextLine();
+                    if (Medico.buscarMedicoPorCpf(novoCpf) != null) {
+                        System.out.println("Erro: CPF já cadastrado para outro médico.");
+                    } else {
+                        medico.setCpf(novoCpf);
+                        System.out.println("CPF atualizado com sucesso!");
+                    }
+                    break;
+
+                case 3:
+                    System.out.println("Idade atual: " + medico.getIdade());
+                    System.out.print("Digite a nova idade: ");
+                    int novaIdade = scanner.nextInt();
+                    scanner.nextLine(); 
+                    medico.setIdade(novaIdade);
+                    System.out.println("Idade atualizada com sucesso!");
+                    break;
+
+                case 4:
                     System.out.println("Email atual: " + medico.getEmail());
                     System.out.print("Digite o novo email: ");
                     String novoEmail = scanner.nextLine();
@@ -439,7 +581,7 @@ public class Main{
                     System.out.println("Email atualizado com sucesso!");
                     break;
 
-                case 3:
+                case 5:
                     System.out.println("Telefone atual: " + medico.getTelefone());
                     System.out.print("Digite o novo telefone: ");
                     String novoTelefone = scanner.nextLine();
@@ -447,7 +589,15 @@ public class Main{
                     System.out.println("Telefone atualizado com sucesso!");
                     break;
 
-                case 4:
+                case 6:
+                    System.out.println("Sexo Biológico atual: " + medico.getSexoBiologico());
+                    System.out.print("Digite o novo Sexo Biológico (M/F): ");
+                    String novoSexoBiologico = scanner.nextLine().toUpperCase();
+                    medico.setSexoBiologico(novoSexoBiologico); 
+                    System.out.println("Sexo Biológico atualizado com sucesso!");
+                    break;
+
+                case 7:
                     System.out.println("Especialidade atual: " + medico.getEspecialidade());
                     System.out.println(Medico.listarEspecialidadesDisponiveis());
                     System.out.print("Digite a nova especialidade (nome completo): ");
@@ -456,7 +606,7 @@ public class Main{
                     System.out.println("Especialidade atualizada com sucesso!");
                     break;
 
-                case 5:
+                case 8:
                     System.out.println("CRM atual: " + medico.getCrm());
                     System.out.print("Digite o novo CRM: ");
                     String novoCrm = scanner.nextLine();
