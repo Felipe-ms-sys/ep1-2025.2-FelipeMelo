@@ -3,6 +3,7 @@ package Projeto1Poo.sistema;
 import Projeto1Poo.entidades.*;
 import java.util.*;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Main{
     
@@ -137,7 +138,7 @@ public class Main{
                             estadoAtual = EstadoMenu.PRINCIPAL;
                             break;
                         case 1: 
-                            //registrarInternacao();
+                            registrarInternacao();
                             break;
                         case 2: 
                             //cancelarInternacao();
@@ -962,6 +963,73 @@ public class Main{
             System.out.println("Opção inválida.");
         }
     }
+
+    private static void registrarInternacao() {
+        System.out.println("-------- Registrar Nova Internação -------");
+
+        List<Leito> leitosDisponiveis = Leito.listarDisponiveis();
+        if (leitosDisponiveis.isEmpty()) {
+            System.out.println("Não há leitos disponíveis no momento.");
+            return;
+        }
+
+        System.out.println("\n--- Leitos Disponíveis ---");
+        for (int i = 0; i < leitosDisponiveis.size(); i++) {
+            System.out.println((i + 1) + ". Leito " + leitosDisponiveis.get(i).getNome());
+        }
+        System.out.println("0. Voltar");
+
+        System.out.print("\nSelecione o leito: ");
+        int opcaoLeito = scanner.nextInt();
+        scanner.nextLine();
+
+        if (opcaoLeito == 0) {
+            System.out.println("Operação cancelada.");
+            return;
+        }
+
+        if (opcaoLeito < 1 || opcaoLeito > leitosDisponiveis.size()) {
+            System.out.println("Opção inválida!");
+            return;
+        }
+        Leito leitoEscolhido = leitosDisponiveis.get(opcaoLeito - 1);
+
+        System.out.print("Digite o CPF do paciente: ");
+        String cpfPaciente = scanner.nextLine();
+        Paciente paciente = Paciente.buscarPacientePorCpf(cpfPaciente);
+        if (paciente == null) {
+            System.out.println("Paciente não encontrado.");
+            return;
+        }
+
+        System.out.print("Digite o CPF do médico responsável: ");
+        String cpfMedico = scanner.nextLine();
+        Medico medico = Medico.buscarMedicoPorCpf(cpfMedico);
+        if (medico == null) {
+            System.out.println("Médico não encontrado.");
+            return;
+        }
+
+        System.out.print("Digite a data e hora da internação (dd/MM/yyyy HH:mm): ");
+        String dataInternacao = scanner.nextLine();
+
+        try {
+            DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm").parse(dataInternacao);
+        } catch (java.time.format.DateTimeParseException e) {
+            System.out.println("Formato de data/hora inválido. Use o formato dd/MM/yyyy HH:mm.");
+            return;
+        }
+
+        try{
+        Internacao novaInternacao = new Internacao(paciente, medico, dataInternacao, leitoEscolhido);
+        Internacao.adicionarInternacao(novaInternacao);
+        leitoEscolhido.setDisponibilidade(false);
+        } catch (IllegalArgumentException e) {
+            System.out.println("\nErro ao registrar internação: " + e.getMessage());
+            return;
+        }
+
+        System.out.println("\nInternação registrada com sucesso para " + paciente.getNome() + " no Leito " + leitoEscolhido.getNome());}
 }
         
     

@@ -22,7 +22,7 @@ public class Internacao {
         this.dataAlta = null;
     }
 
-    public static void registrarInternacao(Internacao internacao) {
+    public static void adicionarInternacao(Internacao internacao) {
         todasInternacoes.add(internacao);
     }
 
