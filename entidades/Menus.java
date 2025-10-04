@@ -51,8 +51,7 @@ public class Menus{
         System.out.println("1. Registrar nova internação ");
         System.out.println("2. Cancelar internação ");
         System.out.println("3. Registrar alta de paciente ");
-        System.out.println("4. Consultar internações ");
-        System.out.println("5. Histórico de internações ");
+        System.out.println("4. Histórico de internações ");
         System.out.println("\n0. Voltar ao Menu Principal\n ");
     }
 

@@ -26,6 +26,10 @@ public class Internacao {
         todasInternacoes.add(internacao);
     }
 
+    public static void removerInternacao(Internacao internacao) {
+    todasInternacoes.remove(internacao);
+    }
+
     public static ArrayList<Internacao> listarTodas() {
         return new ArrayList<>(todasInternacoes);
     }

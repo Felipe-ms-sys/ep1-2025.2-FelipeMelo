@@ -141,15 +141,12 @@ public class Main{
                             registrarInternacao();
                             break;
                         case 2: 
-                            //cancelarInternacao();
+                            excluirInternacao();
                             break;
                         case 3:
                             registrarAlta();
                             break;
                         case 4: 
-                            //consultarInternacoes();
-                            break;
-                        case 5: 
                             //conferirInternacoes(); //Histórico de internações do paciente
                             break;
                     }
@@ -899,7 +896,7 @@ public class Main{
             if (respostaInternacao.equalsIgnoreCase("S")) {
         
                 System.out.println("Redirecionando para o registro de internação...");
-                // registrarInternacao(paciente);
+                    //registrarInternacao(paciente);
             } 
             else {
                 System.out.println("Consulta finalizada.");
@@ -1031,6 +1028,58 @@ public class Main{
 
         System.out.println("\nInternação registrada com sucesso para " + paciente.getNome() + " no Leito " + leitoEscolhido.getNome());}
 
+    private static void excluirInternacao(){
+        System.out.println("-------- Excluir Internação -------");
+        System.out.print("Digite o CPF do paciente para ver suas internações: ");
+        String cpfPaciente = scanner.nextLine();
+        Paciente paciente = Paciente.buscarPacientePorCpf(cpfPaciente);
+
+        if (paciente == null) {
+            System.out.println("Paciente não encontrado!");
+            return;
+        }
+
+        List<Internacao> internacoesDoPaciente = new ArrayList<>();
+        for (Internacao i : Internacao.listarTodas()) {
+            if (i.getPaciente().equals(paciente)) {
+                internacoesDoPaciente.add(i);
+            }
+        }
+
+        if (internacoesDoPaciente.isEmpty()) {
+            System.out.println("Nenhuma internação encontrada para este paciente.");
+            return;
+        }
+
+        System.out.println("\n--- Internações para " + paciente.getNome() + " ---");
+        for (int i = 0; i < internacoesDoPaciente.size(); i++) {
+            Internacao internacaoAtual = internacoesDoPaciente.get(i);
+            System.out.println((i + 1) + ". " +
+                    "Dr(a): " + internacaoAtual.getMedicoResponsavel().getNome() +
+                    " - Data de Internação: " + internacaoAtual.getDataInternacao() +
+                    " - Status: " + internacaoAtual.getStatus());
+        }
+        System.out.println("0. Voltar");
+
+        System.out.print("\nSelecione a internação que deseja excluir: ");
+        int opcao = scanner.nextInt();
+        scanner.nextLine();
+
+        if (opcao == 0) {
+            System.out.println("Operação cancelada.");
+            return;
+        }
+        else if (opcao >= 1 && opcao <= internacoesDoPaciente.size()) {
+            Internacao internacaoParaExcluir = internacoesDoPaciente.get(opcao - 1);
+            Internacao.removerInternacao(internacaoParaExcluir);
+            internacaoParaExcluir.getLeito().setDisponibilidade(true); 
+            System.out.println("Internação excluída com sucesso!");
+        } 
+        else {
+            System.out.println("Opção inválida.");
+        }
+    }
+
     private static void registrarAlta() {
         System.out.println("-------- Registrar Alta -------");
         System.out.print("Digite o CPF do paciente para ver suas internações: ");
@@ -1083,6 +1132,8 @@ public class Main{
             System.out.println("Opção inválida.");
         }
     }
+
+    
 }
 
         
