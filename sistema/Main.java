@@ -144,7 +144,7 @@ public class Main{
                             //cancelarInternacao();
                             break;
                         case 3:
-                            //registrarAlta();
+                            registrarAlta();
                             break;
                         case 4: 
                             //consultarInternacoes();
@@ -1030,9 +1030,60 @@ public class Main{
         }
 
         System.out.println("\nInternação registrada com sucesso para " + paciente.getNome() + " no Leito " + leitoEscolhido.getNome());}
+
+    private static void registrarAlta() {
+        System.out.println("-------- Registrar Alta -------");
+        System.out.print("Digite o CPF do paciente para ver suas internações: ");
+        String cpfPaciente = scanner.nextLine();
+        Paciente paciente = Paciente.buscarPacientePorCpf(cpfPaciente);
+
+        if (paciente == null) {
+            System.out.println("Paciente não encontrado!");
+            return;
+        }
+
+        List<Internacao> internacoesAtivas = new ArrayList<>();
+        for (Internacao i : Internacao.listarTodas()) {
+            if (i.getPaciente().equals(paciente) && i.getStatus().equalsIgnoreCase("Ativa")) {
+                internacoesAtivas.add(i);
+            }
+        }
+
+        if (internacoesAtivas.isEmpty()) {
+            System.out.println("Nenhuma internação ativa encontrada para este paciente.");
+            return;
+        }
+
+        System.out.println("\n--- Internações Ativas para " + paciente.getNome() + " ---");
+        for (int i = 0; i < internacoesAtivas.size(); i++) {
+            Internacao internacaoAtual = internacoesAtivas.get(i);
+            System.out.println((i + 1) + ". " +
+                    "Dr(a): " + internacaoAtual.getMedicoResponsavel().getNome() +
+                    " - Data de Internação: " + internacaoAtual.getDataInternacao() +
+                    " - Leito: " + internacaoAtual.getLeito().getNome());
+        }
+        System.out.println("0. Voltar");
+
+        System.out.print("\nSelecione a internação que deseja finalizar: ");
+        int opcao = scanner.nextInt();
+        scanner.nextLine();
+
+        if (opcao == 0) {
+            System.out.println("Operação cancelada.");
+            return;
+        }
+        else if (opcao >= 1 && opcao <= internacoesAtivas.size()) {
+            Internacao internacaoParaFinalizar = internacoesAtivas.get(opcao - 1);
+            internacaoParaFinalizar.setStatus("Finalizada");
+            internacaoParaFinalizar.setDataAlta(java.time.LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")));
+            internacaoParaFinalizar.getLeito().setDisponibilidade(true); 
+            System.out.println("Internação finalizada com sucesso!");
+        } 
+        else {
+            System.out.println("Opção inválida.");
+        }
+    }
 }
-        
-    
 
         
  
