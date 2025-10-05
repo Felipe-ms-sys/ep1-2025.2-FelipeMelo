@@ -998,6 +998,13 @@ public class Main{
             return;
         }
 
+        for (Internacao i : Internacao.listarTodas()) {
+            if (i.getPaciente().equals(paciente) && i.getStatus().equalsIgnoreCase("Ativa")) {
+                System.out.println("\nErro: Este paciente já possui uma internação ativa no Leito " + i.getLeito().getNome() + ".");
+                return;
+            }
+        }
+        
         System.out.print("Digite o CPF do médico responsável: ");
         String cpfMedico = scanner.nextLine();
         Medico medico = Medico.buscarMedicoPorCpf(cpfMedico);
@@ -1020,6 +1027,7 @@ public class Main{
         Internacao novaInternacao = new Internacao(paciente, medico, dataInternacao, leitoEscolhido);
         Internacao.adicionarInternacao(novaInternacao);
         leitoEscolhido.setDisponibilidade(false);
+        paciente.setStatus("Internado");
         } catch (IllegalArgumentException e) {
             System.out.println("\nErro ao registrar internação: " + e.getMessage());
             return;
@@ -1029,7 +1037,7 @@ public class Main{
 
     private static void excluirInternacao(){
         System.out.println("-------- Excluir Internação -------");
-        System.out.print("Digite o CPF do paciente para ver suas internações: ");
+        System.out.print("Digite o CPF do paciente: ");
         String cpfPaciente = scanner.nextLine();
         Paciente paciente = Paciente.buscarPacientePorCpf(cpfPaciente);
 
@@ -1038,44 +1046,34 @@ public class Main{
             return;
         }
 
-        List<Internacao> internacoesDoPaciente = new ArrayList<>();
+        Internacao internacaoAtiva = null;
         for (Internacao i : Internacao.listarTodas()) {
-            if (i.getPaciente().equals(paciente)) {
-                internacoesDoPaciente.add(i);
+            if (i.getPaciente().equals(paciente) && i.getStatus().equalsIgnoreCase("Ativa")) {
+                internacaoAtiva = i;
+                break; 
             }
         }
 
-        if (internacoesDoPaciente.isEmpty()) {
-            System.out.println("Nenhuma internação encontrada para este paciente.");
+        if (internacaoAtiva == null) {
+            System.out.println("Nenhuma internação ativa encontrada para este paciente.");
             return;
         }
 
-        System.out.println("\n--- Internações para " + paciente.getNome() + " ---");
-        for (int i = 0; i < internacoesDoPaciente.size(); i++) {
-            Internacao internacaoAtual = internacoesDoPaciente.get(i);
-            System.out.println((i + 1) + ". " +
-                    "Dr(a): " + internacaoAtual.getMedicoResponsavel().getNome() +
-                    " - Data de Internação: " + internacaoAtual.getDataInternacao() +
-                    " - Status: " + internacaoAtual.getStatus());
-        }
-        System.out.println("0. Voltar");
+        System.out.println("\n--- Internação Ativa Encontrada ---");
+        System.out.println("Médico(a): " + internacaoAtiva.getMedicoResponsavel().getNome());
+        System.out.println("Data de Internação: " + internacaoAtiva.getDataInternacao());
+        System.out.println("Leito: " + internacaoAtiva.getLeito().getNome());
+        
+        System.out.print("\nTem certeza que deseja excluir esta internação? (S/N): ");
+        String confirmacao = scanner.nextLine().toUpperCase();
 
-        System.out.print("\nSelecione a internação que deseja excluir: ");
-        int opcao = scanner.nextInt();
-        scanner.nextLine();
-
-        if (opcao == 0) {
-            System.out.println("Operação cancelada.");
-            return;
-        }
-        else if (opcao >= 1 && opcao <= internacoesDoPaciente.size()) {
-            Internacao internacaoParaExcluir = internacoesDoPaciente.get(opcao - 1);
-            Internacao.removerInternacao(internacaoParaExcluir);
-            internacaoParaExcluir.getLeito().setDisponibilidade(true); 
+        if (confirmacao.equalsIgnoreCase("S")) {
+            Internacao.removerInternacao(internacaoAtiva);
+            internacaoAtiva.getLeito().setDisponibilidade(true); 
+            paciente.setStatus("Ativo");
             System.out.println("Internação excluída com sucesso!");
-        } 
-        else {
-            System.out.println("Opção inválida.");
+        } else {
+            System.out.println("Exclusão cancelada.");
         }
     }
 

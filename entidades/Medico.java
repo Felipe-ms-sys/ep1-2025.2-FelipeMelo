@@ -13,7 +13,9 @@ public class Medico extends Pessoa{
     private static List<String> especialidadesDisponiveis = new ArrayList<>(Arrays.asList(
             "Cardiologista",
             "Neurologista",
-            "Ortopedista"
+            "Ortopedista",
+            "Pediatra",
+            "Fisioterapeuta"
     ));
     
     public Medico(String nome, String cpf, String email, int idade, String telefone, String sexoBiologico, String crm, String especialidade) {
