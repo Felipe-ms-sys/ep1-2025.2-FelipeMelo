@@ -6,6 +6,7 @@ public enum EstadoMenu {
     MEDICO,
     CONSULTA,
     INTERNACAO,
+    RELATORIOS,
     SAIR;
 }
 
