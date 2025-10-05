@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 public class Paciente extends Pessoa {
     private static List<Paciente> todosPacientes = new ArrayList<>();
+    private static int contadorProntuario = 1;
 
     private String numeroProntuario;
     private String status;
@@ -31,6 +32,12 @@ public class Paciente extends Pessoa {
             }
         }
         todosPacientes.add(paciente);
+    }
+
+    public static String geradorNumeroProntuario() {
+        String proximoNumero = "P" + contadorProntuario;
+        contadorProntuario++; 
+        return proximoNumero;
     }
 
     @Override

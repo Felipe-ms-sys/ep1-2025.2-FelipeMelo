@@ -147,7 +147,7 @@ public class Main{
                             registrarAlta();
                             break;
                         case 4: 
-                            //conferirInternacoes(); //Histórico de internações do paciente
+                            conferirInternacoes(); //Histórico de internações do paciente
                             break;
                     }
                     break;
@@ -156,13 +156,12 @@ public class Main{
                     System.out.println("Opção inválida. Por favor, selecione novamente");
                     break;
             }
-        
         }
     }
 
     private static void cadastrarPaciente(){
         String status = "Ativo";
-        String numeroProntuario = "P" + (Paciente.listarTodos().size() + 1);
+        String numeroProntuario = Paciente.geradorNumeroProntuario();
 
         System.out.println("-------- Cadastrar Novo Paciente -------");
 
@@ -1133,7 +1132,40 @@ public class Main{
         }
     }
 
-    
+    private static void conferirInternacoes(){
+        System.out.println("-------- Consultar Internações do Paciente -------");
+        System.out.print("Digite o CPF do paciente para ver suas internações: ");
+        String cpfPaciente = scanner.nextLine();
+        Paciente paciente = Paciente.buscarPacientePorCpf(cpfPaciente);
+
+        if (paciente == null) {
+            System.out.println("Paciente não encontrado!");
+            return;
+        }
+
+        List<Internacao> internacoesDoPaciente = new ArrayList<>();
+        for (Internacao i : Internacao.listarTodas()) {
+            if (i.getPaciente().equals(paciente)) {
+                internacoesDoPaciente.add(i);
+            }
+        }
+
+        if (internacoesDoPaciente.isEmpty()) {
+            System.out.println("Nenhuma internação encontrada para este paciente.");
+            return;
+        }
+
+        System.out.println("\n--- Internações de " + paciente.getNome() + " ---");
+        for (int i = 0; i < internacoesDoPaciente.size(); i++) {
+            Internacao internacaoAtual = internacoesDoPaciente.get(i);
+            System.out.println((i + 1) + ". " +
+                    "Dr(a): " + internacaoAtual.getMedicoResponsavel().getNome() +
+                    " - Data de Internação: " + internacaoAtual.getDataInternacao() +
+                    " - Data de Alta: " + (internacaoAtual.getDataAlta() != null ? internacaoAtual.getDataAlta() : "N/A") +
+                    " - Status: " + internacaoAtual.getStatus() +
+                    " - Leito: " + internacaoAtual.getLeito().getNome());
+        }
+    }
 }
 
         
