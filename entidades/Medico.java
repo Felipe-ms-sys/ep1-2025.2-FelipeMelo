@@ -2,28 +2,15 @@ package Projeto1Poo.entidades;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class Medico extends Pessoa{
     private static List<Medico> todosMedicos = new ArrayList<>();
     private String crm;
-    private String especialidade;
-
-    private static List<String> especialidadesDisponiveis = new ArrayList<>(Arrays.asList(
-            "Cardiologista",
-            "Neurologista",
-            "Ortopedista",
-            "Pediatra",
-            "Fisioterapeuta"
-    ));
+    private Especialidade especialidade;
     
-    public Medico(String nome, String cpf, String email, int idade, String telefone, String sexoBiologico, String crm, String especialidade) {
+    public Medico(String nome, String cpf, String email, int idade, String telefone, String sexoBiologico, String crm, Especialidade especialidade) {
         super(nome, cpf, email, idade, telefone, sexoBiologico);
-
-        if (!especialidadesDisponiveis.contains(especialidade)) {
-            throw new IllegalArgumentException("Especialidade inválida. Escolha entre: " + especialidadesDisponiveis);
-        }
         this.crm = crm;
         this.especialidade = especialidade;
     }
@@ -46,7 +33,9 @@ public class Medico extends Pessoa{
         "\nTelefone: " + getTelefone() +
         "\nSexo Biológico: " + getSexoBiologico() + 
         "\nCRM: " + crm + 
-        "\nEspecialidade: " + especialidade + "\n";
+        "\nEspecialidade: " + especialidade + "\n" +
+        "\nCusto da Consulta: R$ " + especialidade.getCusto() + "\n";
+
     }
 
     public static List<Medico> listarTodos() {
@@ -54,7 +43,7 @@ public class Medico extends Pessoa{
     }
 
     public static List<String> listarEspecialidadesDisponiveis() {
-        return new ArrayList<>(especialidadesDisponiveis);
+        return Especialidade.listarTodas();
     }
 
     public static Medico buscarMedicoPorCpf(String cpf){
@@ -86,14 +75,11 @@ public class Medico extends Pessoa{
         this.crm = crm;
     }
 
-    public String getEspecialidade() {
+    public Especialidade getEspecialidade() {
         return especialidade;
     }
 
-    public void setEspecialidade(String especialidade) {
-        if (!especialidadesDisponiveis.contains(especialidade)) {
-            throw new IllegalArgumentException("Especialidade inválida. Escolha entre: " + especialidadesDisponiveis);
-        }
+    public void setEspecialidade(Especialidade especialidade) {
         this.especialidade = especialidade;
     }
     

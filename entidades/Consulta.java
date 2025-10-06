@@ -29,8 +29,8 @@ public class Consulta {
             "\nMédico: " + getMedico().getNome() +
             "\nData e Hora: " + getDataHoraConsulta().format(formato) +
             "\nStatus: " + getStatus() +
-            (diagnostico != null ? "\nDiagnóstico: " + diagnostico : "Não registrado") +
-            (prescricao != null ? "\nPrescrição: " + prescricao : "Não registrada") + "\n";
+            (diagnostico != null ? "\nDiagnóstico: " + diagnostico : "\nNão registrado") +
+            (prescricao != null ? "\nPrescrição: " + prescricao : "\nNão registrada") + "\n";
     }
 
     public static void adicionarConsulta(Consulta consulta) {

@@ -6,7 +6,7 @@ public class Leito {
     private static List<Leito> todosLeitos = new ArrayList<>();
 
     static{
-        for (char i= 'A'; i <= 'Z'; i++) {
+        for (char i= 'A'; i <= 'O'; i++) {
             todosLeitos.add(new Leito(String.valueOf(i)));
         }
     }

@@ -43,6 +43,7 @@ public class Main{
                             break; 
                         case 5:
                             estadoAtual = EstadoMenu.RELATORIOS;
+                            break;
                         default:
                             System.out.println("Opção inválida. Por favor, selecione novamente");
                             break;
@@ -522,18 +523,17 @@ public class Main{
     
         System.out.print("Especialidade (Digite o nome completo): ");
         System.out.println(Medico.listarEspecialidadesDisponiveis());
-        String especialidade = scanner.nextLine();
+        String nomeEspecialidade = scanner.nextLine();
 
         try {
-            Medico novoMedico;          
-            novoMedico = new Medico(nome, cpf, email, idade, telefone, sexoBiologico, crm, especialidade);
-            
-            Medico.cadastrar(novoMedico);
-            System.out.println("Dr. " + novoMedico.getNome() +" (" + novoMedico.getEspecialidade() + ") cadastrado com sucesso!\n");
-        } catch (IllegalArgumentException e) {
-            System.out.println("Erro ao cadastrar médico: " + e.getMessage());
-        }
+            Especialidade especialidade = Especialidade.fromString(nomeEspecialidade);
 
+            Medico novoMedico = new Medico(nome, cpf, email, idade, telefone, sexoBiologico, crm, especialidade); 
+            Medico.cadastrar(novoMedico);
+            System.out.println("Dr. " + novoMedico.getNome() + " (" + novoMedico.getEspecialidade().getNome() + ") cadastrado com sucesso!\n");
+        } catch (IllegalArgumentException e) {
+            System.out.println("\nErro ao cadastrar médico: " + e.getMessage());
+        }
     }
 
     private static void editarMedico() {
@@ -619,12 +619,20 @@ public class Main{
                     break;
 
                 case 7:
-                    System.out.println("Especialidade atual: " + medico.getEspecialidade());
-                    System.out.println(Medico.listarEspecialidadesDisponiveis());
-                    System.out.print("Digite a nova especialidade (nome completo): ");
-                    String novaEspecialidade = scanner.nextLine();
-                    medico.setEspecialidade(novaEspecialidade); 
-                    System.out.println("Especialidade atualizada com sucesso!");
+                    System.out.println("Especialidade atual: " + medico.getEspecialidade().getNome());
+                    System.out.println("Especialidades Disponíveis:");
+                    for (String e : Medico.listarEspecialidadesDisponiveis()) {
+                        System.out.println("- " + e);
+                    }
+                    System.out.print("Digite a nova especialidade: ");
+                    String nomeNovaEspecialidade = scanner.nextLine();
+                    try {
+                        Especialidade novaEspecialidade = Especialidade.fromString(nomeNovaEspecialidade);
+                        medico.setEspecialidade(novaEspecialidade);
+                        System.out.println("Especialidade atualizada com sucesso!");
+                    } catch (IllegalArgumentException e) {
+                        System.out.println("Erro: " + e.getMessage());
+                    }
                     break;
 
                 case 8:
@@ -727,7 +735,7 @@ public class Main{
         }
         Consulta novaConsulta = new Consulta(paciente, medico, dataHoraConsulta);
         Consulta.adicionarConsulta(novaConsulta);
-        System.out.println("Consulta agendada com sucesso para " + dataHoraConsulta + " com o Dr(a). " + medico.getNome() + ".");
+        System.out.println("Consulta agendada com sucesso para " + dataHoraConsulta + " com o Dr(a). " + medico.getNome() + ".\n");
     }
     
     private static void reagendarConsulta(){
@@ -1098,7 +1106,7 @@ public class Main{
 
     //private static void conferirPacientes(){}
     //private static void conferirMedicos(){}
-    
+
     private static void conferirConsultas(){
         System.out.println("-------- Conferir Consultas do Paciente -------");
         System.out.print("Digite o CPF do paciente para ver suas consultas: ");
@@ -1171,7 +1179,7 @@ public class Main{
         }
 
         if (internacoesDoPaciente.isEmpty()) {
-            System.out.println("Nenhuma internação encontrada para este paciente.");
+            System.out.println("\nNenhuma internação encontrada para este paciente.");
             return;
         }
 
@@ -1180,10 +1188,10 @@ public class Main{
             Internacao internacaoAtual = internacoesDoPaciente.get(i);
             System.out.println((i + 1) + ". " +
                     "Dr(a): " + internacaoAtual.getMedicoResponsavel().getNome() +
-                    " - Data de Internação: " + internacaoAtual.getDataInternacao() +
-                    " - Data de Alta: " + (internacaoAtual.getDataAlta() != null ? internacaoAtual.getDataAlta() : "N/A") +
-                    " - Status: " + internacaoAtual.getStatus() +
-                    " - Leito: " + internacaoAtual.getLeito().getNome());
+                    "\n - Data de Internação: " + internacaoAtual.getDataInternacao() +
+                    "\n - Data de Alta: " + (internacaoAtual.getDataAlta() != null ? internacaoAtual.getDataAlta() : "--") +
+                    "\n - Status: " + internacaoAtual.getStatus() +
+                    "\n - Leito: " + internacaoAtual.getLeito().getNome());
         }
     }
 }
