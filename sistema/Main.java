@@ -530,7 +530,7 @@ public class Main{
 
             Medico novoMedico = new Medico(nome, cpf, email, idade, telefone, sexoBiologico, crm, especialidade); 
             Medico.cadastrar(novoMedico);
-            System.out.println("Dr. " + novoMedico.getNome() + " (" + novoMedico.getEspecialidade().getNome() + ") cadastrado com sucesso!\n");
+            System.out.println("\nDr. " + novoMedico.getNome() + " (" + novoMedico.getEspecialidade().getNome() + ") cadastrado com sucesso!\n");
         } catch (IllegalArgumentException e) {
             System.out.println("\nErro ao cadastrar médico: " + e.getMessage());
         }
