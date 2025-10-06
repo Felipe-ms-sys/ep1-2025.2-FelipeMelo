@@ -10,7 +10,7 @@ public class Menus{
         System.out.println("3. Gestão de Consultas ");
         System.out.println("4. Gestão de Internações ");  
         System.out.println("5. Relatórios ");
-        System.out.println("\n0. Fechar Sistema \n");
+        System.out.println("\n0. Salvar e sair \n");
         }
     
     

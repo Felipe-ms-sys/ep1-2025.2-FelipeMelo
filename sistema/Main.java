@@ -6,17 +6,17 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class Main{
-    
     private static Scanner scanner = new Scanner(System.in);
     public static void main (String[] args){
-
+        carregarDados();
         boolean executando = true;
         EstadoMenu estadoAtual = EstadoMenu.PRINCIPAL;
         while (executando){
 
             switch (estadoAtual) {    
                 case SAIR:
-                    System.out.println("Fechando Sistema");
+                    System.out.println("Dados salvos. Fechando Sistema");
+                    salvarDados();
                     executando = false;
                     break; 
 
@@ -1193,6 +1193,14 @@ public class Main{
                     "\n - Status: " + internacaoAtual.getStatus() +
                     "\n - Leito: " + internacaoAtual.getLeito().getNome());
         }
+    }
+
+    private static void salvarDados() {
+            Persistencia.salvarTodosDados();
+        }
+
+    private static void carregarDados() {
+        Persistencia.carregarTodosDados();
     }
 }
 
