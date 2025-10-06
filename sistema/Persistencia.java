@@ -11,14 +11,14 @@ public class Persistencia {
     private static final String ARQUIVO_PACIENTES = DIRETORIO + "pacientes.txt";
     private static final String ARQUIVO_MEDICOS = DIRETORIO + "medicos.txt";
     private static final String ARQUIVO_CONSULTAS = DIRETORIO + "consultas.txt";
-    //private static final String ARQUIVO_INTERNACOES = DIRETORIO + "internacoes.txt";
+    private static final String ARQUIVO_INTERNACOES = DIRETORIO + "internacoes.txt";
     
     public static void carregarTodosDados() {
         new File(DIRETORIO).mkdirs();
         carregarPacientes();
         carregarMedicos();
         carregarConsultas();
-        //carregarInternacoes();
+        carregarInternacoes();
     }
 
 
@@ -135,11 +135,56 @@ public class Persistencia {
             System.err.println("Erro ao carregar consultas: " + e.getMessage());
         }
     }
+    public static void carregarInternacoes() {
+        if (!new File(ARQUIVO_INTERNACOES).exists()) return;
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(ARQUIVO_INTERNACOES))) {
+            String linha;
+            while ((linha = reader.readLine()) != null) {
+                String[] dados = linha.split(";", -1);
+
+                if (dados.length >= 6) {
+                    String cpfPaciente = dados[0];
+                    String cpfMedico = dados[1];
+                    String nomeLeito = dados[2];
+
+                    Paciente paciente = Paciente.buscarPacientePorCpf(cpfPaciente);
+                    Medico medico = Medico.buscarMedicoPorCpf(cpfMedico);
+                    Leito leito = Leito.buscarPorNome(nomeLeito);
+
+                    if (paciente != null && medico != null && leito != null) {
+                        String dataInternacao = dados[3];
+
+                        Internacao internacao = new Internacao(paciente, medico, dataInternacao, leito);
+
+                        String dataAlta = dados[4];
+                        if (!dataAlta.isEmpty()) {
+                            internacao.setDataAlta(dataAlta);
+                        }
+                        internacao.setStatus(dados[5]);
+
+                        if (internacao.getStatus().equalsIgnoreCase("Ativa")) {
+                            leito.setDisponibilidade(false);
+                            paciente.setStatus("Internado");
+                        }
+
+                        Internacao.adicionarInternacao(internacao);
+
+                    } else {
+                        System.err.println("Não foi possível carregar internação: Paciente, Médico ou Leito não encontrado");
+                    }
+                }
+            }
+        } catch (Exception e) {
+            System.err.println("Erro ao carregar internações: " + e.getMessage());
+        }
+    }
 
     public static void salvarTodosDados() {
         salvarPacientes(Paciente.listarTodos());
         salvarMedicos(Medico.listarTodos());
         salvarConsultas(Consulta.listarTodas());
+        salvarInternacoes(Internacao.listarTodas());
     }
 
     public static void salvarPacientes(List<Paciente> pacientes) {
@@ -219,6 +264,27 @@ public class Persistencia {
         }
     }
 
+    public static void salvarInternacoes(List<Internacao> internacoes) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(ARQUIVO_INTERNACOES))) {
+            for (Internacao internacao : internacoes) {
+                
+                String dataAltaStr = internacao.getDataAlta() != null ? internacao.getDataAlta() : "";
+
+                String linha = String.join(";",
+                        internacao.getPaciente().getCpf(),
+                        internacao.getMedicoResponsavel().getCpf(),
+                        internacao.getLeito().getNome(),
+                        internacao.getDataInternacao(),
+                        dataAltaStr, 
+                        internacao.getStatus()
+                );
+                writer.write(linha);
+                writer.newLine();
+            }
+        } catch (IOException e) {
+            System.err.println("Erro ao salvar internações: " + e.getMessage());
+        }
+    }
 
 }
 

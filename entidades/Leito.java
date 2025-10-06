@@ -33,6 +33,15 @@ public class Leito {
         return leitosDisponiveis;
     }
 
+    public static Leito buscarPorNome(String nome) {
+        for (Leito leito : todosLeitos) {
+            if (leito.getNome().equalsIgnoreCase(nome)) {
+                return leito;
+            }
+        }
+        return null;
+    }
+
     public String getNome() {
         return nome;
     }
