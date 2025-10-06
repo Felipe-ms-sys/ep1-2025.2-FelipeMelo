@@ -1,6 +1,8 @@
 package Projeto1Poo.sistema;
 import Projeto1Poo.entidades.*;
 import java.io.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 
@@ -8,14 +10,14 @@ public class Persistencia {
     private static final String DIRETORIO = "Projeto1Poo/dados/";
     private static final String ARQUIVO_PACIENTES = DIRETORIO + "pacientes.txt";
     private static final String ARQUIVO_MEDICOS = DIRETORIO + "medicos.txt";
-    //private static final String ARQUIVO_CONSULTAS = DIRETORIO + "consultas.txt";
+    private static final String ARQUIVO_CONSULTAS = DIRETORIO + "consultas.txt";
     //private static final String ARQUIVO_INTERNACOES = DIRETORIO + "internacoes.txt";
     
     public static void carregarTodosDados() {
         new File(DIRETORIO).mkdirs();
         carregarPacientes();
         carregarMedicos();
-        //carregarConsultas();
+        carregarConsultas();
         //carregarInternacoes();
     }
 
@@ -95,9 +97,49 @@ public class Persistencia {
         }
     }
 
+    public static void carregarConsultas() {
+        if (!new File(ARQUIVO_CONSULTAS).exists()) return;
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(ARQUIVO_CONSULTAS))) {
+            String linha;
+            while ((linha = reader.readLine()) != null) {
+                String[] dados = linha.split(";", -1); 
+
+                if (dados.length >= 6) {
+                    String cpfPaciente = dados[0];
+                    String cpfMedico = dados[1];
+
+                    Paciente paciente = Paciente.buscarPacientePorCpf(cpfPaciente);
+                    Medico medico = Medico.buscarMedicoPorCpf(cpfMedico);
+
+                    if (paciente != null && medico != null) {
+                        LocalDateTime dataHora = LocalDateTime.parse(dados[2], DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
+
+                        Consulta consulta = new Consulta(paciente, medico, dataHora);
+
+                        consulta.setStatus(dados[3]);
+                        if (!dados[4].isEmpty()) {
+                            consulta.setDiagnostico(dados[4]);
+                        }
+                        if (!dados[5].isEmpty()) {
+                            consulta.setPrescricao(dados[5]);
+                        }
+
+                        Consulta.adicionarConsulta(consulta);
+                    } else {
+                        System.err.println("Não foi possível carregar consulta: Paciente ou Médico não encontrado");
+                    }
+                }
+            }
+        } catch (Exception e) {
+            System.err.println("Erro ao carregar consultas: " + e.getMessage());
+        }
+    }
+
     public static void salvarTodosDados() {
         salvarPacientes(Paciente.listarTodos());
         salvarMedicos(Medico.listarTodos());
+        salvarConsultas(Consulta.listarTodas());
     }
 
     public static void salvarPacientes(List<Paciente> pacientes) {
@@ -157,6 +199,25 @@ public class Persistencia {
         }
     }
 
+    public static void salvarConsultas(List<Consulta> consultas) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(ARQUIVO_CONSULTAS))) {
+            for (Consulta consulta : consultas) {
+    
+                String linha = String.join(";",
+                        consulta.getPaciente().getCpf(),
+                        consulta.getMedico().getCpf(),
+                        consulta.getDataHoraConsulta().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")),
+                        consulta.getStatus(),
+                        consulta.getDiagnostico() != null ? consulta.getDiagnostico() : "",
+                        consulta.getPrescricao() != null ? consulta.getPrescricao() : ""
+                );
+                writer.write(linha);
+                writer.newLine();
+            }
+        } catch (IOException e) {
+            System.err.println("Erro ao salvar consultas: " + e.getMessage());
+        }
+    }
 
 
 }
