@@ -12,13 +12,15 @@ public class Consulta {
     private LocalDateTime dataHoraConsulta;
     private String status;
     private String diagnostico;
-    private String prescricao;    
+    private String prescricao;   
+    private Local local; 
 
 
-    public Consulta(Paciente paciente, Medico medico, LocalDateTime dataConsulta) {
+    public Consulta(Paciente paciente, Medico medico, LocalDateTime dataConsulta, Local local) {
         this.paciente = paciente;
         this.medico = medico;
         this.dataHoraConsulta = dataConsulta;
+        this.local = local;
         this.status = "Agendada";
     }
 
@@ -27,10 +29,25 @@ public class Consulta {
     public String toString() {
         return "Paciente: " + getPaciente().getNome() +
             "\nMédico: " + getMedico().getNome() +
+            "\nLocal: " + getLocal().getNome() +
             "\nData e Hora: " + getDataHoraConsulta().format(formato) +
             "\nStatus: " + getStatus() +
             (diagnostico != null ? "\nDiagnóstico: " + diagnostico : "\nNão registrado") +
             (prescricao != null ? "\nPrescrição: " + prescricao : "\nNão registrada") + "\n";
+    }
+
+    public static boolean analisarConflito(Medico medico, Local local, LocalDateTime dataHora) {
+        for (Consulta c : todasConsultas) {
+            if (c.getDataHoraConsulta().isEqual(dataHora)) {
+                if (c.getMedico().equals(medico)) {
+                    return true; 
+                }
+                if (c.getLocal().equals(local)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     public static void adicionarConsulta(Consulta consulta) {
@@ -51,6 +68,10 @@ public class Consulta {
 
     public Medico getMedico() {
         return medico;
+    }
+
+    public Local getLocal(){
+        return local;
     }
 
     public LocalDateTime getDataHoraConsulta() {

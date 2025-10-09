@@ -10,11 +10,13 @@ public class Persistencia {
     private static final String DIRETORIO = "Projeto1Poo/dados/";
     private static final String ARQUIVO_PACIENTES = DIRETORIO + "pacientes.txt";
     private static final String ARQUIVO_MEDICOS = DIRETORIO + "medicos.txt";
+    private static final String ARQUIVO_LOCAIS = DIRETORIO + "locais.txt";
     private static final String ARQUIVO_CONSULTAS = DIRETORIO + "consultas.txt";
     private static final String ARQUIVO_INTERNACOES = DIRETORIO + "internacoes.txt";
     
     public static void carregarTodosDados() {
         new File(DIRETORIO).mkdirs();
+        carregarLocais();
         carregarPacientes();
         carregarMedicos();
         carregarConsultas();
@@ -97,37 +99,54 @@ public class Persistencia {
         }
     }
 
+    public static void carregarLocais() {
+        if (!new File(ARQUIVO_LOCAIS).exists()) return;
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(ARQUIVO_LOCAIS))) {
+            String linha;
+            while ((linha = reader.readLine()) != null) {
+                if (Local.buscarPorNome(linha) == null) {
+                    Local.adicionarLocal(new Local(linha));
+                }
+            }
+        } catch (IOException e) {
+            System.err.println("Erro ao carregar locais: " + e.getMessage());
+        }
+    }
+
     public static void carregarConsultas() {
         if (!new File(ARQUIVO_CONSULTAS).exists()) return;
 
         try (BufferedReader reader = new BufferedReader(new FileReader(ARQUIVO_CONSULTAS))) {
             String linha;
             while ((linha = reader.readLine()) != null) {
-                String[] dados = linha.split(";", -1); 
+                String[] dados = linha.split(";", -1);
 
-                if (dados.length >= 6) {
+                if (dados.length >= 7) { 
                     String cpfPaciente = dados[0];
                     String cpfMedico = dados[1];
+                    String nomeLocal = dados[2]; 
 
                     Paciente paciente = Paciente.buscarPacientePorCpf(cpfPaciente);
                     Medico medico = Medico.buscarMedicoPorCpf(cpfMedico);
+                    Local local = Local.buscarPorNome(nomeLocal); 
 
-                    if (paciente != null && medico != null) {
-                        LocalDateTime dataHora = LocalDateTime.parse(dados[2], DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
+                    if (paciente != null && medico != null && local != null) {
+                        LocalDateTime dataHora = LocalDateTime.parse(dados[3], DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
 
-                        Consulta consulta = new Consulta(paciente, medico, dataHora);
+                        Consulta consulta = new Consulta(paciente, medico, dataHora, local);
 
-                        consulta.setStatus(dados[3]);
-                        if (!dados[4].isEmpty()) {
-                            consulta.setDiagnostico(dados[4]);
-                        }
+                        consulta.setStatus(dados[4]);
                         if (!dados[5].isEmpty()) {
-                            consulta.setPrescricao(dados[5]);
+                            consulta.setDiagnostico(dados[5]);
+                        }
+                        if (!dados[6].isEmpty()) {
+                            consulta.setPrescricao(dados[6]);
                         }
 
                         Consulta.adicionarConsulta(consulta);
                     } else {
-                        System.err.println("Não foi possível carregar consulta: Paciente ou Médico não encontrado");
+                        System.err.println("Não foi possível carregar consulta: Paciente, Médico ou Local não encontrado");
                     }
                 }
             }
@@ -135,6 +154,7 @@ public class Persistencia {
             System.err.println("Erro ao carregar consultas: " + e.getMessage());
         }
     }
+
     public static void carregarInternacoes() {
         if (!new File(ARQUIVO_INTERNACOES).exists()) return;
 
@@ -183,6 +203,7 @@ public class Persistencia {
     public static void salvarTodosDados() {
         salvarPacientes(Paciente.listarTodos());
         salvarMedicos(Medico.listarTodos());
+        salvarLocais(Local.listarTodos());  
         salvarConsultas(Consulta.listarTodas());
         salvarInternacoes(Internacao.listarTodas());
     }
@@ -244,6 +265,17 @@ public class Persistencia {
         }
     }
 
+    public static void salvarLocais(List<Local> locais) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(ARQUIVO_LOCAIS))) {
+            for (Local local : locais) {
+                writer.write(local.getNome());
+                writer.newLine();
+            }
+        } catch (IOException e) {
+            System.err.println("Erro ao salvar locais: " + e.getMessage());
+        }
+    }
+    
     public static void salvarConsultas(List<Consulta> consultas) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(ARQUIVO_CONSULTAS))) {
             for (Consulta consulta : consultas) {

@@ -717,6 +717,21 @@ public class Main{
             return;
         }
 
+        System.out.println("--- Locais Disponíveis ---");
+        List<Local> locais = Local.listarTodos();
+        for (int i = 0; i < locais.size(); i++) {
+            System.out.println((i + 1) + ". " + locais.get(i).getNome());
+        }
+        System.out.print("Selecione o local: ");
+        int opcaoLocal = scanner.nextInt();
+        scanner.nextLine(); 
+
+        if (opcaoLocal < 1 || opcaoLocal > locais.size()) {
+            System.out.println("Opção de local inválida.");
+            return;
+        }
+        Local localSelecionado = locais.get(opcaoLocal - 1);
+
         System.out.print("Digite a data e hora da consulta (dd/MM/yyyy HH:mm): ");
         String dataHora = scanner.nextLine();
         LocalDateTime dataHoraConsulta;
@@ -729,13 +744,14 @@ public class Main{
             return;
         }
 
-        if (Medico.horarioOcupado(medico, dataHoraConsulta)) {
-            System.out.println("O médico já possui uma consulta agendada nesse horário. Escolha outro horário.");
+        if (Consulta.analisarConflito(medico, localSelecionado, dataHoraConsulta)) {
+            System.out.println("Não foi possível realizar o agendamento: O médico ou o local já estão ocupados nesse horário.");
             return;
         }
-        Consulta novaConsulta = new Consulta(paciente, medico, dataHoraConsulta);
+
+        Consulta novaConsulta = new Consulta(paciente, medico, dataHoraConsulta, localSelecionado);
         Consulta.adicionarConsulta(novaConsulta);
-        System.out.println("Consulta agendada com sucesso para " + dataHoraConsulta + " com o Dr(a). " + medico.getNome() + ".\n");
+        System.out.println("Consulta agendada com sucesso para " + dataHoraConsulta.format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy 'às' HH:mm")) + " com o Dr(a). " + medico.getNome() + " no " + localSelecionado.getNome() +".\n");
     }
     
     private static void reagendarConsulta(){
@@ -750,7 +766,7 @@ public class Main{
             return;
         }
 
-            List<Consulta> consultasDoPaciente = new ArrayList<>();
+        List<Consulta> consultasDoPaciente = new ArrayList<>();
         for (Consulta con : Consulta.listarTodas()) {
             if (con.getPaciente().equals(paciente)) {
                 consultasDoPaciente.add(con);
@@ -768,6 +784,7 @@ public class Main{
             Consulta consultaAtual = consultasDoPaciente.get(i);
             System.out.println((i + 1) + ". " +
                     "Dr(a): " + consultaAtual.getMedico().getNome() +
+                    "Local: " + consultaAtual.getLocal().getNome() +
                     " - Data: " + consultaAtual.getDataHoraConsulta().format(formato));
         }
         System.out.println("0. Voltar");
@@ -777,14 +794,30 @@ public class Main{
         scanner.nextLine();
 
         if (opcao == 0) {
-        System.out.println("Operação cancelada.");
+            System.out.println("Operação cancelada.");
         return;
         }
         else if (opcao >= 1 && opcao <= consultasDoPaciente.size()) {
             Consulta consultaAntiga = consultasDoPaciente.get(opcao - 1);
-            System.out.print("Digite a NOVA data e hora da consulta (dd/MM/yyyy HH:mm): ");
+            
+            System.out.print("Digite a nova data e hora da consulta (dd/MM/yyyy HH:mm): ");
             String novaDataHoraReagendamento = scanner.nextLine();
             LocalDateTime novaDataHora;
+
+            System.out.println("--- Locais Disponíveis ---");
+            List<Local> locais = Local.listarTodos();
+            for (int i = 0; i < locais.size(); i++) {
+                System.out.println((i + 1) + ". " + locais.get(i).getNome());
+            }
+            System.out.print("Selecione o novo local: ");
+            int opcaoLocal = scanner.nextInt();
+            scanner.nextLine(); 
+
+            if (opcaoLocal < 1 || opcaoLocal > locais.size()) {
+                System.out.println("Opção de local inválida.");
+                return;
+            }
+            Local novoLocal = locais.get(opcaoLocal - 1);
 
             try {
                 novaDataHora = LocalDateTime.parse(novaDataHoraReagendamento, java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
@@ -793,17 +826,18 @@ public class Main{
                 return;
             }
 
-            if (Medico.horarioOcupado(consultaAntiga.getMedico(), novaDataHora)) {
-                System.out.println("O médico já possui uma consulta agendada nesse novo horário. Escolha outro momento.");
+            Consulta.removerConsulta(consultaAntiga);
+
+            if (Consulta.analisarConflito(consultaAntiga.getMedico(), novoLocal, novaDataHora)) {
+                Consulta.adicionarConsulta(consultaAntiga);
+                System.out.println("Erro no agendamento: O médico ou o local já estão ocupados nesse novo horário.");
                 return;
             }
 
-            Consulta.removerConsulta(consultaAntiga);
-            Consulta novaConsulta = new Consulta(consultaAntiga.getPaciente(), consultaAntiga.getMedico(), novaDataHora);
-                
+            Consulta novaConsulta = new Consulta(consultaAntiga.getPaciente(), consultaAntiga.getMedico(), novaDataHora, novoLocal);
             Consulta.adicionarConsulta(novaConsulta);
             System.out.println("Consulta reagendada com sucesso para " + novaDataHora.format(formato) + "!");
-        } 
+        }
         else {
             System.out.println("Opção inválida.");
         }
