@@ -96,9 +96,7 @@ public class Main{
                         case 3: 
                            conferirDadosMedico();
                             break;
-                        case 4: // Método de gerenciar agenda
-                            break;
-                        case 5: 
+                        case 4: 
                             excluirMedico();
                             break;
                     }
@@ -252,7 +250,7 @@ public class Main{
             System.out.print("Número do Plano: ");
             String numeroDoPlano = scanner.nextLine();
 
-            System.out.print("Tipo de Plano: ");
+            System.out.print("Tipo de Plano(Padrão, Senior ou Internação): ");
             String tipoDePlano = scanner.nextLine();
 
             convenio = new Convenio(nomeDoPlano, numeroDoPlano, tipoDePlano);
@@ -424,7 +422,7 @@ public class Main{
                         System.out.print("Número do Plano: ");
                         String numeroDoPlano = scanner.nextLine();
 
-                        System.out.print("Tipo de Plano: ");
+                        System.out.print("Tipo de Plano(Padrão, Senior ou Internação): ");
                         String tipoDePlano = scanner.nextLine();
 
                         Convenio novoConvenio = new Convenio(nomeDoPlano, numeroDoPlano, tipoDePlano);
@@ -784,7 +782,7 @@ public class Main{
             Consulta consultaAtual = consultasDoPaciente.get(i);
             System.out.println((i + 1) + ". " +
                     "Dr(a): " + consultaAtual.getMedico().getNome() +
-                    "Local: " + consultaAtual.getLocal().getNome() +
+                    " - Local: " + consultaAtual.getLocal().getNome() +
                     " - Data: " + consultaAtual.getDataHoraConsulta().format(formato));
         }
         System.out.println("0. Voltar");
@@ -949,6 +947,7 @@ public class Main{
             consultaDiagnostico.setStatus("Realizada"); 
 
             System.out.println("Diagnóstico e prescrição registrados com sucesso!");
+            System.out.println("Custo final da consulta: R$ " + consultaDiagnostico.calcularCusto());
 
             System.out.print("\nÉ necessário registrar uma internação para este paciente? (S/N): ");
             String respostaInternacao = scanner.nextLine().toUpperCase();
@@ -1132,6 +1131,7 @@ public class Main{
             internacaoParaFinalizar.setDataAlta(java.time.LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")));
             internacaoParaFinalizar.getLeito().setDisponibilidade(true); 
             System.out.println("Internação finalizada com sucesso!");
+            System.out.println("Custo total da internação: R$ " + internacaoParaFinalizar.calcularCusto());
         } 
         else {
             System.out.println("Opção inválida.");

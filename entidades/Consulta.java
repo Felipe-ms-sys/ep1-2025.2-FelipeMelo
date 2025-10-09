@@ -32,6 +32,7 @@ public class Consulta {
             "\nLocal: " + getLocal().getNome() +
             "\nData e Hora: " + getDataHoraConsulta().format(formato) +
             "\nStatus: " + getStatus() +
+            "\nCusto: R$ " + String.format("%.2f", calcularCusto()) +
             (diagnostico != null ? "\nDiagnóstico: " + diagnostico : "\nNão registrado") +
             (prescricao != null ? "\nPrescrição: " + prescricao : "\nNão registrada") + "\n";
     }
@@ -48,6 +49,22 @@ public class Consulta {
             }
         }
         return false;
+    }
+
+    public double calcularCusto() {
+        double custoBase = this.getMedico().getEspecialidade().getCusto();
+        Paciente paciente = this.getPaciente();
+        Convenio convenio = paciente.getConvenio();
+
+        if (paciente.getIdade() >= 60 && convenio != null && "Senior".equalsIgnoreCase(convenio.getTipoDePlano())) {
+            return custoBase * 0.50;
+        }
+
+        if (convenio != null && "Padrão".equalsIgnoreCase(convenio.getTipoDePlano())){
+            return custoBase * 0.8;
+        }
+
+        return custoBase;
     }
 
     public static void adicionarConsulta(Consulta consulta) {
