@@ -1,1 +1,3 @@
-111;Felipe;felipemelowon7@gmail.com;19;61988888888;1;P1;Ativo;A+;Camar∆o,Poeira;;
+12345678910;Felipe;felipe@gmail.com;19;61912345678;M;P1;Ativo;A+;poeira;rivotril;plano1/12345/padr∆o
+12345678911;Carlos;carlos@gmail.com;60;61912345677;M;P2;Ativo;O-;;;plano1/54321/Senior
+12345678912;Ana;ana@gmail.com;25;61912345676;F;P3;Ativo;AB;;;plano2/11234/internaá∆o

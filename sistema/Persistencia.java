@@ -218,7 +218,7 @@ public class Persistencia {
                 String convenioStr = "";
                 if (paciente.getConvenio() != null) {
                     Convenio c = paciente.getConvenio();
-                    convenioStr = String.join("/", c.getNomeDoPlano(), c.getNumeroDoPlano(), c.getTipoDePlano());
+                    convenioStr = String.join("|", c.getNomeDoPlano(), c.getNumeroDoPlano(), c.getTipoDePlano());
                 }
 
                 String linha = String.join(";",
