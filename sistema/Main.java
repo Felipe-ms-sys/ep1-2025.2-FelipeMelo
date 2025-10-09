@@ -157,10 +157,10 @@ public class Main{
                                 estadoAtual = EstadoMenu.PRINCIPAL;
                                 break;
                             case 1: 
-                                //conferirpacientes();
+                                conferirPacientes();
                                 break;
                             case 2: 
-                                //conferirmedicos();
+                                conferirMedicos();
                                 break;
                             case 3:
                                 conferirConsultas();
@@ -1138,8 +1138,82 @@ public class Main{
         }
     }
 
-    //private static void conferirPacientes(){}
-    //private static void conferirMedicos(){}
+    private static void conferirPacientes() {
+        System.out.println("-------- Relatório de Pacientes -------");
+        List<Paciente> todosPacientes = Paciente.listarTodos();
+
+        if (todosPacientes.isEmpty()) {
+            System.out.println("Nenhum paciente cadastrado no sistema.");
+            return;
+        }
+
+        System.out.println("\n--- Pacientes Cadastrados ---");
+        for (int i = 0; i < todosPacientes.size(); i++) {
+            Paciente p = todosPacientes.get(i);
+            System.out.println((i + 1) + ". " + p.getNome() + " - CPF: " + p.getCpf());
+        }
+        System.out.println("0. Voltar");
+
+        System.out.print("\nSelecione um paciente para ver os detalhes: ");
+        int opcao = scanner.nextInt();
+        scanner.nextLine(); 
+
+        if (opcao == 0) {
+            return; 
+        }
+
+        if (opcao < 1 || opcao > todosPacientes.size()) {
+            System.out.println("Opção inválida.");
+            return;
+        }
+
+        Paciente pacienteSelecionado = todosPacientes.get(opcao - 1);
+
+        System.out.println("\n--- Dados do Paciente Selecionado ---");
+        
+        System.out.println("\nNome: " + pacienteSelecionado.getNome());
+        System.out.println("CPF: " + pacienteSelecionado.getCpf());
+        System.out.println("Status: " + pacienteSelecionado.getStatus() + "\n");    
+    }
+
+    private static void conferirMedicos() {
+        System.out.println("-------- Relatório de Médicos -------");
+        List<Medico> todosMedicos = Medico.listarTodos();
+
+        if (todosMedicos.isEmpty()) {
+            System.out.println("Nenhum médico cadastrado no sistema.");
+            return;
+        }
+
+        System.out.println("\n--- Médicos Cadastrados ---");
+
+        for (int i = 0; i < todosMedicos.size(); i++) {
+            Medico m = todosMedicos.get(i);
+            System.out.println((i + 1) + ". " + m.getNome() + " - Especialidade: " + m.getEspecialidade().getNome());
+        }
+        System.out.println("0. Voltar");
+
+        System.out.print("\nSelecione um médico para ver os detalhes: ");
+        int opcao = scanner.nextInt();
+        scanner.nextLine(); 
+
+        if (opcao == 0) {
+            return; 
+        }
+
+        if (opcao < 1 || opcao > todosMedicos.size()) {
+            System.out.println("Opção inválida.");
+            return;
+        }
+
+        Medico medicoSelecionado = todosMedicos.get(opcao - 1);
+
+        System.out.println("\n--- Dados do Médico Selecionado ---");
+        System.out.println("\nNome: " + medicoSelecionado.getNome());
+        System.out.println("CPF: " + medicoSelecionado.getCpf());
+        System.out.println("CRM: " + medicoSelecionado.getCrm());
+        System.out.println("Especialidade: " + medicoSelecionado.getEspecialidade().getNome() + "\n");
+    }
 
     private static void conferirConsultas(){
         System.out.println("-------- Conferir Consultas do Paciente -------");
@@ -1231,7 +1305,7 @@ public class Main{
 
     private static void salvarDados() {
             Persistencia.salvarTodosDados();
-        }
+    }
 
     private static void carregarDados() {
         Persistencia.carregarTodosDados();
