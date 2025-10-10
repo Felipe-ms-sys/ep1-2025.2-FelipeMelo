@@ -25,8 +25,9 @@ Desenvolvimento de um sistema de gerenciamento hospitalar utilizando os conceito
 2. **Execução:**  
    Execute o programa com o botão run java
 
-3. **Estrutura de Pastas:**  
-   Projeto1Poo/
+3. **Estrutura de Pastas:**
+
+`Projeto1Poo/
 ├── dados/
 │   ├── consultas.txt
 │   ├── internacoes.txt
@@ -47,12 +48,17 @@ Desenvolvimento de um sistema de gerenciamento hospitalar utilizando os conceito
 │   ├── Paciente.java
 │   └── Pessoa.java
 │
+├── fotos/
+│   ├── cadastroMedico.png
+│   ├── menuPrincipal.png
+│   └── relatorioConsulta.png
+│
 ├── sistema/
 │   ├── Main.java
 │   └── Persistencia.java
 │
 └── README.md
-
+`
 3. **Versão do JAVA utilizada:**  
    java 21.0.6
 
@@ -67,21 +73,24 @@ Desenvolvimento de um sistema de gerenciamento hospitalar utilizando os conceito
 ## Prints da Execução
 
 1. Menu Principal:  
-   ![Inserir Print 1](caminho/do/print1.png)
+   ![Menu principal](‎fotos/menuPrincipal.png)‎
+
 
 2. Cadastro de Médico:  
-   ![Inserir Print 2](caminho/do/print2.png)
+   ‎![Cadastro de médicos](fotos/cadastroMedico.png)
 
 3. Relatório de ?:  
-   ![Inserir Print 3](caminho/do/print3.png)
-
----
-
+   ‎![Relatório da consulta](fotos/relatorioConsulta.png)‎
+   
 ---
 
 ## Observações (Extras ou Dificuldades)
 
-- [Espaço para o aluno comentar qualquer funcionalidade extra que implementou, dificuldades enfrentadas, ou considerações importantes.]
+- [- Dificuldades:
+   1.Tive uma certa dificuldade no começo por conta da sintaxe do java, pelo fato de ter sido o primeiro contato com a linguagem
+   2.Foi meu primeiro projeto dessa proporção, gerir o tempo e relacionar varios blocos de código foi desafiador
+- Observação:
+   1.Percebi um grande avanço não só no meu domínio da linguagem como também na implementação dos pilares da POO, o fato do projeto ter sido desafiador me incentivou a pesquisar mais e aprofundar meu aprendizado]
 
 ---
 
